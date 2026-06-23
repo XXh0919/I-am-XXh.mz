@@ -1,1 +1,62 @@
-👉 **[做题记录](/I-am-XXh.mz/icbp.html)** 
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XXh 的个人空间</title>
+    <style>
+        body { 
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-family: system-ui, sans-serif; 
+            margin: 0; 
+        }
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 50px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+        .avatar {
+            width: 100px; height: 100px;
+            background: #7c3aed; color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3rem; margin: 0 auto 15px;
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
+        }
+        h1 { margin: 0; color: #1e293b; font-size: 1.8rem; }
+        p { color: #64748b; margin: 8px 0 25px; }
+        .btn {
+            display: inline-block;
+            background: #7c3aed; color: white;
+            padding: 12px 30px; border-radius: 40px;
+            text-decoration: none; font-weight: 600;
+            transition: 0.2s;
+        }
+        .btn:hover { background: #692eda; transform: scale(1.02); }
+        .footer-links { margin-top: 20px; font-size: 0.9rem; }
+        .footer-links a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
+        .footer-links a:hover { color: #7c3aed; }
+    </style>
+</head>
+<body>
+    <div class="profile-card">
+        <div class="avatar">👏</div>
+        <h1>我是 XXh</h1>
+        <!-- 这里跳转到你做刷题工具的页面，如果是 index.html，就直接写 / -->
+        <a href="/I-am-XXh.mz/icbp.html" class="btn">📚 做题记录</a>
+        <div class="footer-links">
+            <a href="https://github.com/XXh0919" target="_blank">GitHub</a>
+            <a href="#">关于我</a>
+        </div>
+    </div>
+</body>
+</html>
