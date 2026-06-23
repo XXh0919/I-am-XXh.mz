@@ -193,7 +193,7 @@
             <h3>Codeforces</h3>
             <p>国外算法比赛</p>
             <div class="select-wrapper">
-                <select id="cf-select" onchange="jumpCF()">
+                <select id="cf-select">
                     <option value="">选择账号</option>
                     <option value="XXh0919">XXh0919</option>
                     <option value="Laoxu0919">Laoxu0919</option>
@@ -210,7 +210,7 @@
             <h3>AtCoder</h3>
             <p>国外算法比赛</p>
             <div class="select-wrapper">
-                <select id="at-select" onchange="jumpAt()">
+                <select id="at-select">
                     <option value="">选择账号</option>
                     <option value="XXh0919">XXh0919</option>
                     <option value="Laoxu0919">Laoxu0919</option>
@@ -237,12 +237,16 @@
         const val = document.getElementById('cf-select').value;
         if (val) {
             window.open('https://codeforces.com/profile/' + val, '_blank');
+        } else {
+            alert('请先在下拉框里选择一个 Codeforces 账号！'); // 新增这行提示
         }
     }
     function jumpAt() {
         const val = document.getElementById('at-select').value;
         if (val) {
             window.open('https://atcoder.jp/users/' + val, '_blank');
+        } else {
+            alert('请先在下拉框里选择一个 AtCoder 账号！'); // 新增这行提示
         }
     }
 </script>
