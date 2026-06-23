@@ -9,16 +9,13 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
         body {
-            /* 换成背景图 */
+            /* 换成你自己的背景图 */
             background-image: url('https://img2024.cnblogs.com/blog/3603658/202606/3603658-20260623214455123-762285129.jpg');
-            background-size: cover;          /* 让图片铺满屏幕 */
-            background-position: center;     /* 图片居中显示 */
-            background-attachment: fixed;    /* 滚动时背景固定不动 */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #e2f3fb; /* 图片加载失败时的兜底颜色 */
             
-            /* 再加一个兜底颜色（防止图片加载失败时页面全白） */
-            background-color: #e2f3fb;
-            
-            /* 下面这些保持原样不要动 */
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -92,7 +89,6 @@
             margin-bottom: 16px;
             box-shadow: 0 5px 12px rgba(0,0,0,0.1);
         }
-        /* 为不同的工具设置不同的渐变图标底色 */
         .icon-blue { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
         .icon-orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
         .icon-green { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
@@ -156,15 +152,14 @@
             color: #94a3b8;
             opacity: 0.8;
         }
-        /* 强制去掉所有图标的背景色和阴影 */
+        /* 强制去掉所有图标的背景色、边框和阴影 */
         .icon-wrapper {
             background: transparent !important;
             box-shadow: none !important;
             border: none !important;
         }
-        /* 把图标文字改成深色，不然背景图里看不见 */
         .icon-wrapper i {
-            color: #1e293b !important; /* 深灰色 */
+            color: #1e293b !important;
         }
     </style>
 </head>
@@ -179,13 +174,12 @@
             <div class="icon-wrapper icon-blue"><i class="fa-solid fa-list-check"></i></div>
             <h3>做题记录</h3>
             <p>算法追踪 · 状态记录</p>
-            <!-- 如果你把做题工具命名为 index.html，链接就改成 href="/I-am-XXh.mz/" -->
             <a href="/I-am-XXh.mz/icbp.html" class="card-link">📝 进入</a>
         </div>
 
         <!-- 卡片 2：博客园 -->
         <div class="card">
-            <div class="icon-wrapper icon-orange">
+            <div class="icon-wrapper icon-orange" style="padding: 10px;">
                 <img src="https://ts1.tc.mm.bing.net/th/id/ODF.J6leVzKhepVCqn16LLjyWg?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <h3>博客园</h3>
@@ -195,7 +189,7 @@
 
         <!-- 卡片 3：洛谷 -->
         <div class="card">
-            <div class="icon-wrapper icon-green">
+            <div class="icon-wrapper icon-green" style="padding: 10px;">
                 <img src="https://ts3.tc.mm.bing.net/th/id/ODF.P3Nk_2KM88QKG-9ZDT9-lw?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <h3>洛谷</h3>
@@ -203,13 +197,17 @@
             <a href="https://www.luogu.com.cn" target="_blank" class="card-link">💻 前往</a>
         </div>
 
-        <!-- 卡片 4：Codeforces（带下拉框） -->
+        <!-- 卡片 4：Codeforces（带下拉框 + 主站链接） -->
         <div class="card">
-            <div class="icon-wrapper icon-red">
+            <div class="icon-wrapper icon-red" style="padding: 10px;">
                 <img src="https://ts3.tc.mm.bing.net/th/id/ODF.PnqYzRrYxyP7VRy0DAYqsA?w=32&h=32&qlt=92&pcl=fffffa&o=6&pid=1.2" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <h3>Codeforces</h3>
             <p>国外算法竞赛</p>
+            
+            <!-- 添加的主站链接 -->
+            <a href="https://codeforces.com/" target="_blank" style="display: inline-block; color: #64748b; font-size: 0.75rem; text-decoration: underline; margin: 0 0 8px 0;">🌐 主站首页</a>
+
             <div class="select-wrapper">
                 <select id="cf-select">
                     <option value="">选择账号</option>
@@ -217,16 +215,20 @@
                     <option value="Laoxu0919">Laoxu0919</option>
                 </select>
             </div>
-            <button class="go-btn" onclick="jumpCF()">🚀 前往</button>
+            <button class="go-btn" onclick="jumpCF()">🚀 前往账号</button>
         </div>
 
-        <!-- 卡片 5：AtCoder（带下拉框） -->
+        <!-- 卡片 5：AtCoder（带下拉框 + 主站链接） -->
         <div class="card">
-            <div class="icon-wrapper icon-purple">
+            <div class="icon-wrapper icon-purple" style="padding: 10px;">
                 <img src="//img.atcoder.jp/assets/top/img/logo_bk.svg" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <h3>AtCoder</h3>
             <p>国外算法竞赛</p>
+
+            <!-- 添加的主站链接 -->
+            <a href="https://atcoder.jp/" target="_blank" style="display: inline-block; color: #64748b; font-size: 0.75rem; text-decoration: underline; margin: 0 0 8px 0;">🌐 主站首页</a>
+
             <div class="select-wrapper">
                 <select id="at-select">
                     <option value="">选择账号</option>
@@ -234,10 +236,20 @@
                     <option value="Laoxu0919">Laoxu0919</option>
                 </select>
             </div>
-            <button class="go-btn" onclick="jumpAt()">🚀 前往</button>
+            <button class="go-btn" onclick="jumpAt()">🚀 前往账号</button>
         </div>
 
-        <!-- 留空或者放你的其他个人项目，保持和截图对应的 4 列布局美感 -->
+        <!-- 卡片 6：UOJ -->
+        <div class="card">
+            <div class="icon-wrapper icon-green" style="padding: 10px;">
+                <img src="https://uoj.ac/pictures/UOJ.png" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <h3>UOJ</h3>
+            <p>国内在线题库</p>
+            <a href="https://uoj.ac/" target="_blank" class="card-link">💻 前往</a>
+        </div>
+
+        <!-- 卡片 7：正在构思 -->
         <div class="card">
             <div class="icon-wrapper icon-blue"><i class="fa-regular fa-lightbulb"></i></div>
             <h3>正在构思</h3>
@@ -245,15 +257,6 @@
             <a href="#" class="go-btn" style="background:#e2e8f0;">敬请期待</a>
         </div>
     </div>
-    
-    <div class="card">
-            <div class="icon-wrapper icon-green">
-                <img src="https://uoj.ac/pictures/UOJ.png" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <h3>UOJ</h3>
-            <p>国内在线题库</p>
-            <a href="https://uoj.ac/" target="_blank" class="card-link">💻 前往</a>
-        </div>
     
     <div class="footer-tip">↑ 点击卡片快速跳转 ↑</div>
 </div>
@@ -265,7 +268,7 @@
         if (val) {
             window.open('https://codeforces.com/profile/' + val, '_blank');
         } else {
-            alert('请先在下拉框里选择一个 Codeforces 账号！'); // 新增这行提示
+            alert('请先在下拉框里选择一个 Codeforces 账号！');
         }
     }
     function jumpAt() {
@@ -273,7 +276,7 @@
         if (val) {
             window.open('https://atcoder.jp/users/' + val, '_blank');
         } else {
-            alert('请先在下拉框里选择一个 AtCoder 账号！'); // 新增这行提示
+            alert('请先在下拉框里选择一个 AtCoder 账号！');
         }
     }
 </script>
