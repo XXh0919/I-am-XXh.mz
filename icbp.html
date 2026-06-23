@@ -244,16 +244,6 @@
 
       document.getElementById('streak-days').innerText = computeStreak(problems);
     }
-    // 导出
-    document.getElementById('export-btn').addEventListener('click', ()=>{
-      const dataStr = JSON.stringify(problems);
-      const blob = new Blob([dataStr], {type: 'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = '我的做题记录.json';
-      a.click(); URL.revokeObjectURL(url);
-    });
-    // 导入 (略复杂一点，需要读取文件后覆盖 problems 并保存)
 
     document.getElementById('add-problem-form').addEventListener('submit', (e) => {
       e.preventDefault();
