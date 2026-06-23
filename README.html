@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
@@ -31,6 +32,13 @@
             font-size: 3rem; margin: 0 auto 15px;
             box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
         }
+        /* 让图片自适应变成正圆形 */
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;   /* 把图片切成圆形 */
+            object-fit: cover;    /* 保证图片不变形，自动裁剪居中 */
+        }
         h1 { margin: 0; color: #1e293b; font-size: 1.8rem; }
         p { color: #64748b; margin: 8px 0 25px; }
         .btn {
@@ -48,7 +56,9 @@
 </head>
 <body>
     <div class="profile-card">
-        <div class="avatar">👏</div>
+        <div class="avatar">
+            <img src="https://pic.cnblogs.com/avatar/3603658/20260427215044.png" alt="头像">
+        </div>
         <h1>我是 XXh</h1>
         <!-- 这里跳转到你做刷题工具的页面，如果是 index.html，就直接写 / -->
         <a href="/I-am-XXh.mz/icbp.html" class="btn">📚 做题记录</a>
