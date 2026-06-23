@@ -3,69 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XXh 的个人空间</title>
+    <title>XXh 的工具箱</title>
+    <!-- 引入 FontAwesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { 
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); 
-            min-height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            font-family: system-ui, sans-serif; 
-            margin: 0; 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* 模仿图里的淡蓝色渐变背景 */
+            background: linear-gradient(160deg, #e2f3fb 0%, #cfe5f5 100%);
+            padding: 40px 20px;
         }
-        .profile-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 40px 50px;
-            border-radius: 30px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            max-width: 400px;
-            width: 90%;
-        }
-        .avatar {
-            width: 100px; height: 100px;
-            background: #7c3aed; color: white;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 3rem; margin: 0 auto 15px;
-            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
-        }
-        /* 让图片自适应变成正圆形 */
-        .avatar img {
+        .container {
             width: 100%;
-            height: 100%;
-            border-radius: 50%;   /* 把图片切成圆形 */
-            object-fit: cover;    /* 保证图片不变形，自动裁剪居中 */
+            max-width: 1100px;
+            text-align: center;
         }
-        h1 { margin: 0; color: #1e293b; font-size: 1.8rem; }
-        p { color: #64748b; margin: 8px 0 25px; }
-        .btn {
+        .header-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #2888d8;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-title i { font-size: 2.8rem; }
+        .header-sub {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+            border-top: 1px solid #94a3b8;
+            border-bottom: 1px solid #94a3b8;
             display: inline-block;
-            background: #7c3aed; color: white;
-            padding: 12px 30px; border-radius: 40px;
-            text-decoration: none; font-weight: 600;
-            transition: 0.2s;
+            padding: 5px 15px;
         }
-        .btn:hover { background: #692eda; transform: scale(1.02); }
-        .footer-links { margin-top: 20px; font-size: 0.9rem; }
-        .footer-links a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
-        .footer-links a:hover { color: #7c3aed; }
+        
+        /* 网格卡片布局 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            justify-content: center;
+        }
+
+        /* 单张卡片设计 */
+        .card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 30px 20px;
+            box-shadow: 0 10px 25px rgba(0, 50, 100, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* 图标区域 */
+        .icon-wrapper {
+            width: 68px;
+            height: 68px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 16px;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+        }
+        /* 为不同的工具设置不同的渐变图标底色 */
+        .icon-blue { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .icon-orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .icon-green { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .icon-red { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .icon-purple { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+
+        .card h3 {
+            font-size: 1.15rem;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        .card p {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+
+        /* 下拉菜单和按钮样式 */
+        .select-wrapper {
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        .select-wrapper select {
+            width: 90%;
+            padding: 6px 8px;
+            border-radius: 12px;
+            border: 1px solid #d1d9e6;
+            background: white;
+            font-size: 0.85rem;
+            color: #334155;
+            outline: none;
+        }
+        .go-btn, .card-link {
+            margin-top: 8px;
+            display: inline-block;
+            text-decoration: none;
+            background: #e2e8f0;
+            color: #475569;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .go-btn:hover, .card-link:hover {
+            background: #cbd5e1;
+        }
+        .card-link {
+            padding: 8px 25px;
+            background: #1e293b;
+            color: white;
+        }
+        .card-link:hover {
+            background: #0f172a;
+        }
+        .footer-tip {
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
-    <div class="profile-card">
-        <div class="avatar">
-            <img src="https://cravatar.com/avatar/0855f5d67ae073845c00b2812af1c732?d=mm&s=256" alt="头像">
+<div class="container">
+    <div class="header-title"><i class="fa-solid fa-toolbox"></i> 工具箱合集</div>
+    <div class="header-sub">轻量 · 优雅 · 高效</div>
+
+    <div class="grid">
+        <!-- 卡片 1：做题记录 -->
+        <div class="card">
+            <div class="icon-wrapper icon-blue"><i class="fa-solid fa-list-check"></i></div>
+            <h3>做题记录</h3>
+            <p>算法追踪 · 状态记录</p>
+            <!-- 如果你把做题工具命名为 index.html，链接就改成 href="/I-am-XXh.mz/" -->
+            <a href="/I-am-XXh.mz/icbp.html" class="card-link">📝 进入</a>
         </div>
-        <h1>我是 XXh</h1>
-        <!-- 这里跳转到你做刷题工具的页面，如果是 index.html，就直接写 / -->
-        <a href="/I-am-XXh.mz/icbp.html" class="btn">📚 做题记录</a>
-        <div class="footer-links">
-            <a href="https://github.com/XXh0919" target="_blank">GitHub</a>
-            <a href="#">关于我</a>
+
+        <!-- 卡片 2：博客园 -->
+        <div class="card">
+            <div class="icon-wrapper icon-orange"><i class="fa-brands fa-blogger-b"></i></div>
+            <h3>博客园</h3>
+            <p>文章记录 · 学习笔记</p>
+            <a href="https://www.cnblogs.com/XXh0919" target="_blank" class="card-link">📖 前往</a>
+        </div>
+
+        <!-- 卡片 3：洛谷 -->
+        <div class="card">
+            <div class="icon-wrapper icon-green"><i class="fa-solid fa-dragon"></i></div>
+            <h3>洛谷</h3>
+            <p>国内在线题库</p>
+            <a href="https://www.luogu.com.cn/user/814145" target="_blank" class="card-link">💻 前往</a>
+        </div>
+
+        <!-- 卡片 4：Codeforces（带下拉框） -->
+        <div class="card">
+            <div class="icon-wrapper icon-red"><i class="fa-brands fa-code"></i></div>
+            <h3>Codeforces</h3>
+            <p>国外算法比赛</p>
+            <div class="select-wrapper">
+                <select id="cf-select" onchange="jumpCF()">
+                    <option value="">选择账号</option>
+                    <option value="XXh0919">XXh0919</option>
+                    <option value="Laoxu0919">Laoxu0919</option>
+                </select>
+            </div>
+            <button class="go-btn" onclick="jumpCF()">🚀 前往</button>
+        </div>
+
+        <!-- 卡片 5：AtCoder（带下拉框） -->
+        <div class="card">
+            <div class="icon-wrapper icon-purple"><i class="fa-solid fa-shapes"></i></div>
+            <h3>AtCoder</h3>
+            <p>国外算法比赛</p>
+            <div class="select-wrapper">
+                <select id="at-select" onchange="jumpAt()">
+                    <option value="">选择账号</option>
+                    <option value="XXh0919">XXh0919</option>
+                    <option value="Laoxu0919">Laoxu0919</option>
+                </select>
+            </div>
+            <button class="go-btn" onclick="jumpAt()">🚀 前往</button>
+        </div>
+
+        <!-- 留空或者放你的其他个人项目，保持和截图对应的 4 列布局美感 -->
+        <div class="card">
+            <div class="icon-wrapper icon-blue"><i class="fa-regular fa-lightbulb"></i></div>
+            <h3>正在构思</h3>
+            <p>更多项目开发中...</p>
+            <a href="#" class="go-btn" style="background:#e2e8f0;">敬请期待</a>
         </div>
     </div>
+    
+    <div class="footer-tip">↑ 点击卡片快速跳转 ↑</div>
+</div>
+
+<!-- JS 逻辑：处理下拉框跳转 -->
+<script>
+    function jumpCF() {
+        const val = document.getElementById('cf-select').value;
+        if (val) {
+            window.open('https://codeforces.com/profile/' + val, '_blank');
+        }
+    }
+    function jumpAt() {
+        const val = document.getElementById('at-select').value;
+        if (val) {
+            window.open('https://atcoder.jp/users/' + val, '_blank');
+        }
+    }
+</script>
 </body>
 </html>
