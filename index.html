@@ -9,12 +9,20 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
         body {
+            /* 换成背景图 */
+            background-image: url('https://img2024.cnblogs.com/blog/3603658/202606/3603658-20260623214455123-762285129.jpg');
+            background-size: cover;          /* 让图片铺满屏幕 */
+            background-position: center;     /* 图片居中显示 */
+            background-attachment: fixed;    /* 滚动时背景固定不动 */
+            
+            /* 再加一个兜底颜色（防止图片加载失败时页面全白） */
+            background-color: #e2f3fb;
+            
+            /* 下面这些保持原样不要动 */
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            /* 模仿图里的淡蓝色渐变背景 */
-            background: linear-gradient(160deg, #e2f3fb 0%, #cfe5f5 100%);
             padding: 40px 20px;
         }
         .container {
@@ -147,6 +155,16 @@
             font-size: 0.8rem;
             color: #94a3b8;
             opacity: 0.8;
+        }
+        /* 强制去掉所有图标的背景色和阴影 */
+        .icon-wrapper {
+            background: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+        /* 把图标文字改成深色，不然背景图里看不见 */
+        .icon-wrapper i {
+            color: #1e293b !important; /* 深灰色 */
         }
     </style>
 </head>
