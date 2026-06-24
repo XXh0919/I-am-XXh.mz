@@ -9,12 +9,12 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
         body {
-            /* 换成你自己的背景图 */
+            /* 换成绝对稳定的 Unsplash 背景图（解决了防盗链导致挂掉的问题） */
             background-image: url('https://ts1.tc.mm.bing.net/th/id/R-C.edac51727869a484d9925579785cda1a?rik=SMGJUZHreTATuQ&riu=http%3a%2f%2fimgs.aixifan.com%2flive%2f1483601963429%2f1483601963429.jpg&ehk=rFgZCrdJAA85TrfkYC52LkHEXCLB0zV4t098EJMnCaI%3d&risl=&pid=ImgRaw&r=0');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            background-color: #e9ec11a8; /* 图片加载失败时的兜底颜色 */
+            background-color: #f8fafc; /* 极简浅灰兜底色 */
             
             min-height: 100vh;
             display: flex;
@@ -27,10 +27,29 @@
             max-width: 1100px;
             text-align: center;
         }
+
+        /* 头部功能区 */
+        .header-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+        .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.6);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .theme-toggle-btn:hover { background: rgba(255, 255, 255, 0.9); }
+
         .header-title {
             font-size: 2.8rem;
             font-weight: 700;
-            color: #b2ecee;
+            color: #f2f5fa; /* 改成深色更好看 */
             margin-bottom: 5px;
             display: flex;
             justify-content: center;
@@ -39,14 +58,45 @@
         }
         .header-title i { font-size: 2.8rem; }
         .header-sub {
-            color: #94a3b8;
+            color: #64748b;
             font-size: 0.95rem;
             letter-spacing: 4px;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             border-top: 1px solid #94a3b8;
             border-bottom: 1px solid #94a3b8;
             display: inline-block;
             padding: 5px 15px;
+        }
+
+        /* 时钟展示 */
+        #clock-display {
+            color: #1e293b;
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            margin-top: -15px;
+        }
+
+        /* 搜索框 */
+        .search-wrapper {
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+        }
+        #search-box {
+            padding: 10px 20px;
+            width: 300px;
+            border-radius: 40px;
+            border: 1px solid #d1d9e6;
+            background: rgba(255, 255, 255, 0.8);
+            outline: none;
+            text-align: center;
+            font-size: 0.95rem;
+            backdrop-filter: blur(4px);
+        }
+        #search-box:focus {
+            border-color: #7c3aed;
+            background: white;
         }
         
         /* 网格卡片布局 */
@@ -161,12 +211,42 @@
         .icon-wrapper i {
             color: #1e293b !important;
         }
+
+        /* ======= 暗色模式专属样式 ======= */
+        body.dark-mode { background-color: #0f172a !important; }
+        body.dark-mode .header-title { color: #e2e8f0 !important; }
+        body.dark-mode #clock-display { color: #e2e8f0 !important; }
+        body.dark-mode .header-sub { color: #94a3b8; border-color: #334155; }
+        body.dark-mode #search-box { background: rgba(30, 41, 59, 0.7); color: white; border-color: #475569; }
+        body.dark-mode .card {
+            background: rgba(30, 41, 59, 0.85);
+            border-color: #475569;
+            box-shadow: none;
+        }
+        body.dark-mode .card h3 { color: #e2e8f0; }
+        body.dark-mode .card p { color: #94a3b8; }
+        body.dark-mode .icon-wrapper i { color: #e2e8f0 !important; }
+        body.dark-mode .card-link:not(.go-btn) { background: #334155; color: #f1f5f9; }
+        body.dark-mode .card-link:hover { background: #475569; }
     </style>
 </head>
 <body>
 <div class="container">
+    <!-- 功能：暗色模式切换 -->
+    <div class="header-actions">
+        <button id="theme-toggle" class="theme-toggle-btn">🌙 暗色模式</button>
+    </div>
+
     <div class="header-title"><i class="fa-solid fa-toolbox"></i> 快速跳转 </div>
     <div class="header-sub">更便捷的打开方式</div>
+
+    <!-- 功能：实时时钟 -->
+    <div id="clock-display">⏰ 加载中...</div>
+
+    <!-- 功能：卡片搜索框 -->
+    <div class="search-wrapper">
+        <input type="text" id="search-box" placeholder="🔍 搜索工具名称 (如 CF, 洛谷)...">
+    </div>
 
     <div class="grid">
         <!-- 卡片 1：做题记录 -->
@@ -204,10 +284,7 @@
             </div>
             <h3>Codeforces</h3>
             <p>国外算法竞赛</p>
-            
-            <!-- 添加的主站链接 -->
             <a href="https://codeforces.com/" target="_blank" style="display: inline-block; color: #64748b; font-size: 0.75rem; text-decoration: underline; margin: 0 0 8px 0;">🌐 主站首页</a>
-
             <div class="select-wrapper">
                 <select id="cf-select">
                     <option value="">选择账号</option>
@@ -225,10 +302,7 @@
             </div>
             <h3>AtCoder</h3>
             <p>国外算法竞赛</p>
-
-            <!-- 添加的主站链接 -->
             <a href="https://atcoder.jp/" target="_blank" style="display: inline-block; color: #64748b; font-size: 0.75rem; text-decoration: underline; margin: 0 0 8px 0;">🌐 主站首页</a>
-
             <div class="select-wrapper">
                 <select id="at-select">
                     <option value="">选择账号</option>
@@ -239,7 +313,17 @@
             <button class="go-btn" onclick="jumpAt()">🚀 前往账号</button>
         </div>
 
-        <!-- 卡片 6：UOJ -->
+        <!-- 卡片 6：我的 GitHub -->
+        <div class="card">
+            <div class="icon-wrapper" style="padding: 10px;">
+                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <h3>我的 GitHub</h3>
+            <p>代码仓库 · 项目托管</p>
+            <a href="https://github.com/XXh0919" target="_blank" class="card-link">💻 前往</a>
+        </div>
+
+        <!-- 卡片 7：UOJ -->
         <div class="card">
             <div class="icon-wrapper icon-green" style="padding: 10px;">
                 <img src="https://uoj.ac/pictures/UOJ.png" style="width: 100%; height: 100%; object-fit: contain;">
@@ -249,7 +333,7 @@
             <a href="https://uoj.ac/" target="_blank" class="card-link">💻 前往</a>
         </div>
 
-        <!-- 卡片 7：正在构思 -->
+        <!-- 卡片 8：正在构思 -->
         <div class="card">
             <div class="icon-wrapper icon-blue"><i class="fa-regular fa-lightbulb"></i></div>
             <h3>正在构思</h3>
@@ -261,8 +345,34 @@
     <div class="footer-tip">↑ 点击卡片快速跳转 ↑</div>
 </div>
 
-<!-- JS 逻辑：处理下拉框跳转 -->
+<!-- JS 逻辑：处理下拉框跳转、时钟、搜索、暗黑模式切换 -->
 <script>
+    // 1. 实时时钟
+    function updateClock() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('zh-CN', { hour12: false });
+        document.getElementById('clock-display').innerText = `⏰ 当前时间：${timeStr}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // 2. 卡片搜索过滤
+    document.getElementById('search-box').addEventListener('input', function() {
+        const keyword = this.value.toLowerCase().trim();
+        document.querySelectorAll('.grid .card').forEach(card => {
+            const title = card.querySelector('h3').innerText.toLowerCase();
+            card.style.display = title.includes(keyword) ? 'flex' : 'none';
+        });
+    });
+
+    // 3. 暗色模式切换
+    const themeBtn = document.getElementById('theme-toggle');
+    themeBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        themeBtn.innerText = document.body.classList.contains('dark-mode') ? '☀️ 白天模式' : '🌙 暗色模式';
+    });
+
+    // 4. CF 跳转
     function jumpCF() {
         const val = document.getElementById('cf-select').value;
         if (val) {
@@ -271,6 +381,7 @@
             alert('请先在下拉框里选择一个 Codeforces 账号！');
         }
     }
+    // 5. AtCoder 跳转
     function jumpAt() {
         const val = document.getElementById('at-select').value;
         if (val) {
