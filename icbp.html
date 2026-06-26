@@ -65,6 +65,7 @@
     .dot-self { background: #10b981; }
     .dot-solution { background: #f59e0b; }
     .dot-help { background: #3b82f6; }
+    .dot-ai { background: #06b6d4; } /* 新加：AI帮助的圆点颜色 */
     .method-text { font-size: 0.8rem; color: #475569; }
     .filter-section { margin-top: 12px; }
     .filter-label { font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 6px; }
@@ -116,7 +117,22 @@
         <div class="form-group"><label>难度</label><select class="form-control" id="difficulty"><option value="0">暂无评定</option><option value="1">入门</option><option value="2">普及−</option><option value="3">普及/提高−</option><option value="4" selected>普及+/提高</option><option value="5">提高+/省选−</option><option value="6">省选/NOI−</option><option value="7">NOI/NOI+/CTSC</option></select></div>
         <div class="form-group"><label>个人认为难度</label><select class="form-control" id="self-difficulty"><option value="0">暂无评定</option><option value="1">入门</option><option value="2">普及−</option><option value="3">普及/提高−</option><option value="4" selected>普及+/提高</option><option value="5">提高+/省选−</option><option value="6">省选/NOI−</option><option value="7">NOI/NOI+/CTSC</option></select></div>
       </div>
-      <div class="form-group"><label>完成方式</label><select class="form-control" id="method"><option value="self" selected>✨ 独立写出</option><option value="solution">📖 看了题解</option><option value="help">🤝 同学帮助</option></select></div>
+      <div class="form-group"><label>完成方式</label>
+        <div id="method-group" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px;">
+          <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+            <input type="checkbox" value="self" checked> <span>✨ 独立写出</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+            <input type="checkbox" value="solution"> <span>📖 看了题解</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+            <input type="checkbox" value="help"> <span>🤝 同学帮助</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+            <input type="checkbox" value="ai"> <span>🤖 AI 帮助</span>
+          </label>
+        </div>
+      </div>
       <button type="submit" class="btn">➕ 添加题目</button>
     </form>
     <div style="margin-top: 16px; display: flex; justify-content: flex-end;"><button class="btn-outline" id="clear-all-btn" style="width:auto;">🧹 清空所有记录</button></div>
@@ -126,7 +142,13 @@
     <div class="card-header"><h2>📊 做题趋势</h2><span class="badge" id="filtered-count">—</span></div>
     <div>
       <div class="filter-section"><div class="filter-label">🔍 按难度筛选</div><div class="filter-chips" id="filter-container-diff"><div class="chip active" data-diff="all">全部</div><div class="chip" data-diff="0">暂无评定</div><div class="chip" data-diff="1">入门</div><div class="chip" data-diff="2">普及−</div><div class="chip" data-diff="3">普及/提高−</div><div class="chip" data-diff="4">普及+/提高</div><div class="chip" data-diff="5">提高+/省选−</div><div class="chip" data-diff="6">省选/NOI−</div><div class="chip" data-diff="7">NOI/NOI+/CTSC</div></div></div>
-      <div class="filter-section"><div class="filter-label">📌 按完成方式筛选</div><div class="filter-chips" id="filter-container-method"><div class="chip active" data-method="all">全部</div><div class="chip" data-method="self">✨ 独立写出</div><div class="chip" data-method="solution">📖 看了题解</div><div class="chip" data-method="help">🤝 同学帮助</div></div></div>
+      <div class="filter-section"><div class="filter-label">📌 按完成方式筛选</div><div class="filter-chips" id="filter-container-method">
+        <div class="chip active" data-method="all">全部</div>
+        <div class="chip" data-method="self">✨ 独立写出</div>
+        <div class="chip" data-method="solution">📖 看了题解</div>
+        <div class="chip" data-method="help">🤝 同学帮助</div>
+        <div class="chip" data-method="ai">🤖 AI 帮助</div>
+      </div></div>
     </div>
     <div class="chart-wrapper"><canvas id="trendChart"></canvas></div>
     <footer>每日完成题目数（最近7天）</footer>
@@ -154,7 +176,22 @@
       <div class="form-group"><label>难度</label><select id="edit-difficulty" class="form-control"><option value="0">暂无评定</option><option value="1">入门</option><option value="2">普及−</option><option value="3">普及/提高−</option><option value="4">普及+/提高</option><option value="5">提高+/省选−</option><option value="6">省选/NOI−</option><option value="7">NOI/NOI+/CTSC</option></select></div>
       <div class="form-group"><label>个人认为难度</label><select id="edit-self-difficulty" class="form-control"><option value="0">暂无评定</option><option value="1">入门</option><option value="2">普及−</option><option value="3">普及/提高−</option><option value="4">普及+/提高</option><option value="5">提高+/省选−</option><option value="6">省选/NOI−</option><option value="7">NOI/NOI+/CTSC</option></select></div>
     </div>
-    <div class="form-group"><label>完成方式</label><select id="edit-method" class="form-control"><option value="self">✨ 独立写出</option><option value="solution">📖 看了题解</option><option value="help">🤝 同学帮助</option></select></div>
+    <div class="form-group"><label>完成方式</label>
+      <div id="edit-method-group" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px;">
+        <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+          <input type="checkbox" value="self"> <span>✨ 独立写出</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+          <input type="checkbox" value="solution"> <span>📖 看了题解</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+          <input type="checkbox" value="help"> <span>🤝 同学帮助</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+          <input type="checkbox" value="ai"> <span>🤖 AI 帮助</span>
+        </label>
+      </div>
+    </div>
     <button id="save-edit-btn" class="btn" style="margin-top:10px;">💾 保存修改</button>
   </div>
 </div>
@@ -164,15 +201,51 @@
     let problems = [];
     const STORAGE_KEY = 'algo_tracker_problems_v7';
     const DIFF_MAP = {0:'暂无评定',1:'入门',2:'普及−',3:'普及/提高-',4:'普及+/提高',5:'提高+/省选-',6:'省选/NOI-',7:'NOI/NOI+/CTSC'};
-    const METHOD_MAP = {self:{label:'独立写出',dotClass:'dot-self',emoji:'✨'},solution:{label:'看了题解',dotClass:'dot-solution',emoji:'📖'},help:{label:'同学帮助',dotClass:'dot-help',emoji:'🤝'}};
-    let currentDiffFilter = 'all', currentMethodFilter = 'all';
+    const METHOD_MAP = {
+      self:{label:'独立写出',dotClass:'dot-self',emoji:'✨'},
+      solution:{label:'看了题解',dotClass:'dot-solution',emoji:'📖'},
+      help:{label:'同学帮助',dotClass:'dot-help',emoji:'🤝'},
+      ai:{label:'AI帮助',dotClass:'dot-ai',emoji:'🤖'}
+    };
+    let currentDiffFilter = 'all';
+    let selectedMethodFilters = []; // 改为数组，支持多选
     let currentEditId = null;
 
-    function loadFromStorage() { const stored = localStorage.getItem(STORAGE_KEY); if(stored) try{ problems = JSON.parse(stored); }catch(e){} }
+    function loadFromStorage() { 
+      const stored = localStorage.getItem(STORAGE_KEY); 
+      if(stored) { 
+        try{ 
+          problems = JSON.parse(stored); 
+          // 兼容旧数据：如果是单选字符串，转成数组
+          problems = problems.map(p => {
+            if (!p.method) p.method = ['self'];
+            if (typeof p.method === 'string') p.method = [p.method];
+            return p;
+          });
+        }catch(e){} 
+      } 
+    }
     function saveToStorage() { localStorage.setItem(STORAGE_KEY, JSON.stringify(problems)); }
     function getTodayStr() { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
     function getLastNDays(n) { const dates=[]; const today=new Date(); for(let i=n-1;i>=0;i--){ const d=new Date(today); d.setDate(today.getDate()-i); dates.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`); } return dates; }
-    function filterProblems() { return problems.filter(p=>{ if(currentDiffFilter!=='all' && p.difficulty!==parseInt(currentDiffFilter)) return false; if(currentMethodFilter!=='all' && p.method!==currentMethodFilter) return false; return true; }); }
+    function filterProblems() { 
+      return problems.filter(p=>{ 
+        if(currentDiffFilter!=='all' && p.difficulty!==parseInt(currentDiffFilter)) return false; 
+        // 多选过滤逻辑
+        if(selectedMethodFilters.length > 0) {
+          // 检查 p.method 是否包含任意一个选中的标签
+          let hasMatch = false;
+          for (let m of p.method) {
+            if (selectedMethodFilters.includes(m)) {
+              hasMatch = true; 
+              break;
+            }
+          }
+          if (!hasMatch) return false;
+        }
+        return true; 
+      }); 
+    }
     function computeStreak(allProblems) { if(allProblems.length===0) return 0; const dateSet=new Set(allProblems.map(p=>p.date)); let streak=0; let checkDate=new Date(getTodayStr()); while(true){ const dStr=checkDate.toISOString().slice(0,10); if(dateSet.has(dStr)){ streak++; checkDate.setDate(checkDate.getDate()-1); }else break; } return streak; }
     function escapeHtml(t){ if(!t) return ''; return String(t).replace(/[&<>]/g, function(c){ if(c==='&') return '&amp;'; if(c==='<') return '&lt;'; if(c==='>') return '&gt;'; return c;}); }
 
@@ -203,7 +276,14 @@
           const isToday = d===todayStr;
           const dayProblems = groupByDate[d] || [];
           let probHtml = '';
-          dayProblems.forEach(item=>{ const mi=METHOD_MAP[item.method]||METHOD_MAP.self; probHtml+=`<div class="daily-problem-item"><span>▪</span><span class="recent-pid">${escapeHtml(item.pid)}</span><span class="recent-name">${escapeHtml(item.name)}</span><span class="difficulty-tag diff-${item.difficulty}">原</span><span class="difficulty-tag diff-${item.selfDiff}">自</span><span class="method-text">${mi.emoji}</span></div>`; });
+          dayProblems.forEach(item=>{ 
+            // 组装多个标签
+            let methodStr = item.method.map(m => {
+              const mi = METHOD_MAP[m] || METHOD_MAP.self;
+              return `${mi.emoji}`;
+            }).join(' ');
+            probHtml+=`<div class="daily-problem-item"><span>▪</span><span class="recent-pid">${escapeHtml(item.pid)}</span><span class="recent-name">${escapeHtml(item.name)}</span><span class="difficulty-tag diff-${item.difficulty}">原</span><span class="difficulty-tag diff-${item.selfDiff}">自</span><span class="method-text">${methodStr}</span></div>`; 
+          });
           listHtml+=`<li class="daily-date-row ${isToday?'today-row':''}" data-day="${d}"><span class="date-badge">${d} ${isToday?'(今日)':'<span class="daily-arrow">▼</span>'}</span><span class="count-badge">${dayProblems.length} 题</span></li><div class="day-problem-wrap" data-wrap="${d}">${probHtml||'<div style="padding:6px 12px; color:#94a3b8;">无题目</div>'}</div>`;
         });
         dailyListDiv.innerHTML = listHtml;
@@ -218,11 +298,15 @@
         recent.forEach(p => {
           const diffName = DIFF_MAP[p.difficulty] || p.difficulty;
           const tagsDisplay = p.tags?.trim() || '无标签';
-          const mi = METHOD_MAP[p.method] || METHOD_MAP.self;
+          // 多标签渲染
+          let methodHtml = p.method.map(m => {
+            const mi = METHOD_MAP[m] || METHOD_MAP.self;
+            return `<span class="method-indicator"><span class="method-dot ${mi.dotClass}"></span><span class="method-text">${mi.emoji} ${mi.label}</span></span>`;
+          }).join(' ');
           let problemLink = p.url?.trim() || `https://www.luogu.com.cn/problem/${encodeURIComponent(p.pid)}`;
           recentHtml += `<li>
             <div class="recent-item-info">
-              <div style="display:flex; align-items:center; gap:8px;"><span class="recent-pid"><a href="${escapeHtml(problemLink)}" target="_blank">${escapeHtml(p.pid)}</a></span><span class="method-indicator"><span class="method-dot ${mi.dotClass}"></span><span class="method-text">${mi.emoji} ${mi.label}</span></span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><span class="recent-pid"><a href="${escapeHtml(problemLink)}" target="_blank">${escapeHtml(p.pid)}</a></span>${methodHtml}</div>
               <span class="recent-name">${escapeHtml(p.name)}</span>
               <div class="recent-meta"><span class="recent-tags" title="${escapeHtml(tagsDisplay)}">🏷️ ${escapeHtml(tagsDisplay)}</span></div>
             </div>
@@ -240,7 +324,15 @@
       }
 
       document.querySelectorAll('.delete-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); const id = Number(btn.dataset.id); problems = problems.filter(p => p.id !== id); saveToStorage(); refreshUI(); }); });
-      document.querySelectorAll('.edit-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); const id = Number(btn.dataset.id); const problem = problems.find(p => p.id === id); if(!problem) return; currentEditId = id; document.getElementById('edit-pid').value = problem.pid; document.getElementById('edit-pname').value = problem.name; document.getElementById('edit-url').value = problem.url || ''; document.getElementById('edit-tags').value = problem.tags || ''; document.getElementById('edit-difficulty').value = problem.difficulty; document.getElementById('edit-self-difficulty').value = problem.selfDiff; document.getElementById('edit-method').value = problem.method; document.getElementById('edit-modal').style.display = 'flex'; }); });
+      document.querySelectorAll('.edit-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); const id = Number(btn.dataset.id); const problem = problems.find(p => p.id === id); if(!problem) return; currentEditId = id; document.getElementById('edit-pid').value = problem.pid; document.getElementById('edit-pname').value = problem.name; document.getElementById('edit-url').value = problem.url || ''; document.getElementById('edit-tags').value = problem.tags || ''; document.getElementById('edit-difficulty').value = problem.difficulty; document.getElementById('edit-self-difficulty').value = problem.selfDiff; 
+            
+            // 回显多选状态
+            const editMethodGroup = document.getElementById('edit-method-group');
+            editMethodGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+              cb.checked = problem.method.includes(cb.value);
+            });
+
+            document.getElementById('edit-modal').style.display = 'flex'; }); });
 
       document.getElementById('streak-days').innerText = computeStreak(problems);
     }
@@ -250,17 +342,42 @@
       const pid = document.getElementById('pid').value.trim();
       const pname = document.getElementById('pname').value.trim();
       if(!pid || !pname) { alert('题号和题目名必填'); return; }
-      problems.push({ id: Date.now()+Math.floor(Math.random()*1000), pid, name: pname, url: document.getElementById('url').value.trim(), tags: document.getElementById('tags').value.trim(), difficulty: parseInt(document.getElementById('difficulty').value), selfDiff: parseInt(document.getElementById('self-difficulty').value), method: document.getElementById('method').value, date: getTodayStr() });
+      // 获取选中的多个方法
+      const checkedMethods = document.querySelectorAll('#method-group input[type="checkbox"]:checked');
+      const methods = Array.from(checkedMethods).map(cb => cb.value);
+      
+      problems.push({ id: Date.now()+Math.floor(Math.random()*1000), pid, name: pname, url: document.getElementById('url').value.trim(), tags: document.getElementById('tags').value.trim(), difficulty: parseInt(document.getElementById('difficulty').value), selfDiff: parseInt(document.getElementById('self-difficulty').value), method: methods, date: getTodayStr() });
       saveToStorage();
       refreshUI();
       document.getElementById('add-problem-form').reset();
       document.getElementById('difficulty').value = '4';
       document.getElementById('self-difficulty').value = '4';
+      // 重置方法组默认选中第一个，防止用户不方便
+      document.querySelectorAll('#method-group input[type="checkbox"]').forEach(cb => { cb.checked = cb.value === 'self'; });
     });
     document.getElementById('clear-all-btn').addEventListener('click', ()=>{ if(confirm('确定清空所有题目记录吗？')){ problems=[]; saveToStorage(); refreshUI(); } });
 
     document.querySelectorAll('#filter-container-diff .chip').forEach(chip => { chip.addEventListener('click', () => { document.querySelectorAll('#filter-container-diff .chip').forEach(c=>c.classList.remove('active')); chip.classList.add('active'); currentDiffFilter = chip.dataset.diff; refreshUI(); }); });
-    document.querySelectorAll('#filter-container-method .chip').forEach(chip => { chip.addEventListener('click', () => { document.querySelectorAll('#filter-container-method .chip').forEach(c=>c.classList.remove('active')); chip.classList.add('active'); currentMethodFilter = chip.dataset.method; refreshUI(); }); });
+    
+    // 多选筛选器：点击切换选中状态
+    document.querySelectorAll('#filter-container-method .chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const method = chip.dataset.method;
+        if (method === 'all') {
+          selectedMethodFilters = [];
+          document.querySelectorAll('#filter-container-method .chip').forEach(c => c.classList.remove('active'));
+          document.querySelector('#filter-container-method .chip[data-method="all"]').classList.add('active');
+        } else {
+          const idx = selectedMethodFilters.indexOf(method);
+          if (idx > -1) selectedMethodFilters.splice(idx, 1);
+          else selectedMethodFilters.push(method);
+          chip.classList.toggle('active');
+          // 取消全选的激活
+          document.querySelector('#filter-container-method .chip[data-method="all"]').classList.remove('active');
+        }
+        refreshUI();
+      });
+    });
 
     document.getElementById('close-modal').addEventListener('click', () => { document.getElementById('edit-modal').style.display = 'none'; });
     document.getElementById('edit-modal').addEventListener('click', (e) => { if(e.target === document.getElementById('edit-modal')) document.getElementById('edit-modal').style.display = 'none'; });
@@ -274,7 +391,11 @@
       problem.tags = document.getElementById('edit-tags').value.trim();
       problem.difficulty = parseInt(document.getElementById('edit-difficulty').value);
       problem.selfDiff = parseInt(document.getElementById('edit-self-difficulty').value);
-      problem.method = document.getElementById('edit-method').value;
+      
+      // 获取多选结果
+      const checkedMethods = document.querySelectorAll('#edit-method-group input[type="checkbox"]:checked');
+      problem.method = Array.from(checkedMethods).map(cb => cb.value);
+      
       saveToStorage();
       refreshUI();
       document.getElementById('edit-modal').style.display = 'none';
