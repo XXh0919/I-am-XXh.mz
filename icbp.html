@@ -50,7 +50,8 @@
     .difficulty-row .form-group { flex: 1; }
     .btn { background: #7c3aed; color: white; border: none; padding: 12px 16px; border-radius: 40px; font-weight: 600; font-size: 1rem; width: 100%; cursor: pointer; margin-top: 8px; }
     .btn:hover { background: #692eda; }
-    .btn-outline { background: transparent; color: #1e293b; border: 1.5px solid #e2e8f0; padding: 6px 12px; font-size: 0.85rem; cursor: pointer; }
+    .btn-outline { background: transparent; color: #1e293b; border: 1.5px solid #e2e8f0; padding: 6px 12px; font-size: 0.85rem; cursor: pointer; border-radius: 40px; transition: 0.2s; }
+    .btn-outline:hover { background: #e2e8f0; }
     .difficulty-tag { display: inline-block; padding: 2px 10px; border-radius: 30px; font-weight: 500; font-size: 0.75rem; }
     .diff-0 { background: rgb(209,209,209); color: rgb(69,69,69); }
     .diff-1 { background: rgb(254,76,97); color: white; }
@@ -65,7 +66,7 @@
     .dot-self { background: #10b981; }
     .dot-solution { background: #f59e0b; }
     .dot-help { background: #3b82f6; }
-    .dot-ai { background: #06b6d4; } /* 新加：AI帮助的圆点颜色 */
+    .dot-ai { background: #06b6d4; }
     .method-text { font-size: 0.8rem; color: #475569; }
     .filter-section { margin-top: 12px; }
     .filter-label { font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 6px; }
@@ -102,6 +103,19 @@
     .day-problem-wrap.show { display: block; }
     .daily-problem-item { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
     #edit-modal .card { max-height: 90vh; overflow-y: auto; }
+
+    /* ===== 多设备自适应（媒体查询） ===== */
+    @media (max-width: 820px) {
+      .dashboard { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .dashboard { grid-template-columns: 1fr; gap: 15px; }
+      .card { padding: 15px; }
+      .card-header h2 { font-size: 1.1rem; }
+      .stat-number { font-size: 2rem; }
+      .streak-box { padding: 15px; }
+      .difficulty-row { flex-wrap: wrap; }
+    }
   </style>
 </head>
 <body>
@@ -135,7 +149,14 @@
       </div>
       <button type="submit" class="btn">➕ 添加题目</button>
     </form>
-    <div style="margin-top: 16px; display: flex; justify-content: flex-end;"><button class="btn-outline" id="clear-all-btn" style="width:auto;">🧹 清空所有记录</button></div>
+    
+    <!-- 导入/导出功能区 -->
+    <div style="margin-top: 16px; display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+      <button class="btn-outline" id="export-btn" style="width:auto;">💾 导出记录</button>
+      <button class="btn-outline" id="import-btn" style="width:auto;">📂 导入记录</button>
+      <button class="btn-outline" id="clear-all-btn" style="width:auto;">🧹 清空所有记录</button>
+      <input type="file" id="file-input" accept=".json" style="display: none;">
+    </div>
   </div>
 
   <div class="card">
@@ -208,7 +229,7 @@
       ai:{label:'AI帮助',dotClass:'dot-ai',emoji:'🤖'}
     };
     let currentDiffFilter = 'all';
-    let selectedMethodFilters = []; // 改为数组，支持多选
+    let selectedMethodFilters = [];
     let currentEditId = null;
 
     function loadFromStorage() { 
@@ -216,7 +237,6 @@
       if(stored) { 
         try{ 
           problems = JSON.parse(stored); 
-          // 兼容旧数据：如果是单选字符串，转成数组
           problems = problems.map(p => {
             if (!p.method) p.method = ['self'];
             if (typeof p.method === 'string') p.method = [p.method];
@@ -231,15 +251,10 @@
     function filterProblems() { 
       return problems.filter(p=>{ 
         if(currentDiffFilter!=='all' && p.difficulty!==parseInt(currentDiffFilter)) return false; 
-        // 多选过滤逻辑
         if(selectedMethodFilters.length > 0) {
-          // 检查 p.method 是否包含任意一个选中的标签
           let hasMatch = false;
           for (let m of p.method) {
-            if (selectedMethodFilters.includes(m)) {
-              hasMatch = true; 
-              break;
-            }
+            if (selectedMethodFilters.includes(m)) { hasMatch = true; break; }
           }
           if (!hasMatch) return false;
         }
@@ -277,7 +292,6 @@
           const dayProblems = groupByDate[d] || [];
           let probHtml = '';
           dayProblems.forEach(item=>{ 
-            // 组装多个标签
             let methodStr = item.method.map(m => {
               const mi = METHOD_MAP[m] || METHOD_MAP.self;
               return `${mi.emoji}`;
@@ -298,7 +312,6 @@
         recent.forEach(p => {
           const diffName = DIFF_MAP[p.difficulty] || p.difficulty;
           const tagsDisplay = p.tags?.trim() || '无标签';
-          // 多标签渲染
           let methodHtml = p.method.map(m => {
             const mi = METHOD_MAP[m] || METHOD_MAP.self;
             return `<span class="method-indicator"><span class="method-dot ${mi.dotClass}"></span><span class="method-text">${mi.emoji} ${mi.label}</span></span>`;
@@ -326,7 +339,6 @@
       document.querySelectorAll('.delete-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); const id = Number(btn.dataset.id); problems = problems.filter(p => p.id !== id); saveToStorage(); refreshUI(); }); });
       document.querySelectorAll('.edit-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); const id = Number(btn.dataset.id); const problem = problems.find(p => p.id === id); if(!problem) return; currentEditId = id; document.getElementById('edit-pid').value = problem.pid; document.getElementById('edit-pname').value = problem.name; document.getElementById('edit-url').value = problem.url || ''; document.getElementById('edit-tags').value = problem.tags || ''; document.getElementById('edit-difficulty').value = problem.difficulty; document.getElementById('edit-self-difficulty').value = problem.selfDiff; 
             
-            // 回显多选状态
             const editMethodGroup = document.getElementById('edit-method-group');
             editMethodGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
               cb.checked = problem.method.includes(cb.value);
@@ -342,7 +354,6 @@
       const pid = document.getElementById('pid').value.trim();
       const pname = document.getElementById('pname').value.trim();
       if(!pid || !pname) { alert('题号和题目名必填'); return; }
-      // 获取选中的多个方法
       const checkedMethods = document.querySelectorAll('#method-group input[type="checkbox"]:checked');
       const methods = Array.from(checkedMethods).map(cb => cb.value);
       
@@ -352,14 +363,53 @@
       document.getElementById('add-problem-form').reset();
       document.getElementById('difficulty').value = '4';
       document.getElementById('self-difficulty').value = '4';
-      // 重置方法组默认选中第一个，防止用户不方便
       document.querySelectorAll('#method-group input[type="checkbox"]').forEach(cb => { cb.checked = cb.value === 'self'; });
     });
     document.getElementById('clear-all-btn').addEventListener('click', ()=>{ if(confirm('确定清空所有题目记录吗？')){ problems=[]; saveToStorage(); refreshUI(); } });
 
+    // ===== 导出功能 =====
+    document.getElementById('export-btn').addEventListener('click', function() {
+      if (problems.length === 0) { alert('当前没有记录可导出！'); return; }
+      const data = JSON.stringify(problems, null, 2);
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `my_algorithm_record_${getTodayStr()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+
+    // ===== 导入功能 =====
+    document.getElementById('import-btn').addEventListener('click', function() {
+      document.getElementById('file-input').click();
+    });
+    document.getElementById('file-input').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        try {
+          const imported = JSON.parse(ev.target.result);
+          if (!Array.isArray(imported)) throw new Error('格式错误');
+          if (confirm(`检测到 ${imported.length} 条记录，确认要用这些记录覆盖当前页面数据吗？`)) {
+            problems = imported;
+            saveToStorage();
+            refreshUI();
+            alert('导入成功！');
+          }
+        } catch (err) {
+          alert('导入失败，请确认你选择的是正确的 JSON 备份文件。');
+        }
+        e.target.value = '';
+      };
+      reader.readAsText(file);
+    });
+
+    // ===== 筛选器 =====
     document.querySelectorAll('#filter-container-diff .chip').forEach(chip => { chip.addEventListener('click', () => { document.querySelectorAll('#filter-container-diff .chip').forEach(c=>c.classList.remove('active')); chip.classList.add('active'); currentDiffFilter = chip.dataset.diff; refreshUI(); }); });
-    
-    // 多选筛选器：点击切换选中状态
     document.querySelectorAll('#filter-container-method .chip').forEach(chip => {
       chip.addEventListener('click', () => {
         const method = chip.dataset.method;
@@ -372,7 +422,6 @@
           if (idx > -1) selectedMethodFilters.splice(idx, 1);
           else selectedMethodFilters.push(method);
           chip.classList.toggle('active');
-          // 取消全选的激活
           document.querySelector('#filter-container-method .chip[data-method="all"]').classList.remove('active');
         }
         refreshUI();
@@ -391,11 +440,8 @@
       problem.tags = document.getElementById('edit-tags').value.trim();
       problem.difficulty = parseInt(document.getElementById('edit-difficulty').value);
       problem.selfDiff = parseInt(document.getElementById('edit-self-difficulty').value);
-      
-      // 获取多选结果
       const checkedMethods = document.querySelectorAll('#edit-method-group input[type="checkbox"]:checked');
       problem.method = Array.from(checkedMethods).map(cb => cb.value);
-      
       saveToStorage();
       refreshUI();
       document.getElementById('edit-modal').style.display = 'none';
