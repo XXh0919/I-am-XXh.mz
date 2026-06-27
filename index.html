@@ -4,437 +4,726 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XXh 的快捷方式</title>
-    <!-- 引入 FontAwesome 图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
         body {
-            /* 换成绝对稳定的 Unsplash 背景图（解决了防盗链导致挂掉的问题） */
             background-image: url('https://ts1.tc.mm.bing.net/th/id/R-C.edac51727869a484d9925579785cda1a?rik=SMGJUZHreTATuQ&riu=http%3a%2f%2fimgs.aixifan.com%2flive%2f1483601963429%2f1483601963429.jpg&ehk=rFgZCrdJAA85TrfkYC52LkHEXCLB0zV4t098EJMnCaI%3d&risl=&pid=ImgRaw&r=0');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-color: #f8fafc; /* 极简浅灰兜底色 */
-            
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
+            background-size: cover; background-position: center; background-attachment: fixed; background-color: #f8fafc;
+            min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 40px 20px;
         }
-        .container {
-            width: 100%;
-            max-width: 1100px;
-            text-align: center;
-        }
+        .container { width: 100%; max-width: 1200px; text-align: center; }
 
         /* 头部功能区 */
-        .header-actions {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 15px;
-        }
+        .header-actions { display: flex; justify-content: flex-end; margin-bottom: 15px; }
         .theme-toggle-btn {
-            background: rgba(255, 255, 255, 0.6);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: 0.2s;
-            backdrop-filter: blur(4px);
+            background: rgba(255, 255, 255, 0.6); border: none; padding: 8px 16px; border-radius: 20px;
+            cursor: pointer; font-size: 0.9rem; transition: 0.2s; backdrop-filter: blur(4px);
         }
         .theme-toggle-btn:hover { background: rgba(255, 255, 255, 0.9); }
 
         .header-title {
-            font-size: 2.8rem;
-            font-weight: 700;
-            color: #f2f5fa; /* 改成深色更好看 */
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
+            font-size: 2.8rem; font-weight: 700; color: #f2f5fa; margin-bottom: 5px;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
         }
         .header-title i { font-size: 2.8rem; }
         .header-sub {
-            color: #64748b;
-            font-size: 0.95rem;
-            letter-spacing: 4px;
-            margin-bottom: 20px;
-            border-top: 1px solid #94a3b8;
-            border-bottom: 1px solid #94a3b8;
-            display: inline-block;
-            padding: 5px 15px;
+            color: #64748b; font-size: 0.95rem; letter-spacing: 4px; margin-bottom: 20px;
+            border-top: 1px solid #94a3b8; border-bottom: 1px solid #94a3b8;
+            display: inline-block; padding: 5px 15px;
         }
 
-        /* 时钟展示 */
-        #clock-display {
-            color: #f2f5fa;
-            font-weight: 500;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            margin-top: -15px;
-        }
-
-        /* 搜索框 */
-        .search-wrapper {
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: center;
-        }
+        #clock-display { color: #f2f5fa; font-weight: 500; font-size: 1.1rem; margin-bottom: 20px; margin-top: -15px; }
+        .search-wrapper { margin-bottom: 25px; display: flex; justify-content: center; }
         #search-box {
-            padding: 10px 20px;
-            width: 300px;
-            border-radius: 40px;
-            border: 1px solid #d1d9e6;
-            background: rgba(255, 255, 255, 0.8);
-            outline: none;
-            text-align: center;
-            font-size: 0.95rem;
-            backdrop-filter: blur(4px);
+            padding: 10px 20px; width: 300px; border-radius: 40px; border: 1px solid #d1d9e6;
+            background: rgba(255, 255, 255, 0.8); outline: none; text-align: center; font-size: 0.95rem; backdrop-filter: blur(4px);
         }
-        #search-box:focus {
-            border-color: #7c3aed;
-            background: white;
-        }
-        
-        /* 网格卡片布局 */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 25px;
-            justify-content: center;
-        }
+        #search-box:focus { border-color: #7c3aed; background: white; }
 
-        /* 单张卡片设计 */
-        .card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 30px 20px;
+        /* 类别大卡片容器 */
+        .section-block {
+            background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px);
+            border-radius: 28px; padding: 20px 20px 25px; margin-bottom: 30px;
             box-shadow: 0 10px 25px rgba(0, 50, 100, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.5);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: left;
+            transition: transform 0.2s ease, opacity 0.2s, margin 0.2s, box-shadow 0.2s;
+            cursor: grab;
         }
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
-            background: rgba(255, 255, 255, 0.9);
+        .section-block:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12); }
+        .section-block:active { cursor: grabbing; }
+        
+        /* 大卡片拖拽状态 */
+        .section-block.dragging {
+            opacity: 0.4;
+            transform: scale(0.95);
+            cursor: grabbing;
+        }
+        .section-block.drag-over {
+            border: 2px dashed #7c3aed !important;
+            background: rgba(124, 58, 237, 0.1) !important;
+            transform: scale(1.02);
+            margin-bottom: 40px;
         }
 
-        /* 图标区域 */
-        .icon-wrapper {
-            width: 68px;
-            height: 68px;
-            border-radius: 20px;
-            display: flex;
+        .section-title {
+            font-size: 1.6rem; font-weight: 700; color: #1e293b;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 8px 10px 8px; border-bottom: 1px dashed #d1d9e6; margin-bottom: 20px;
+            pointer-events: none;
+        }
+        .section-title .manage-btn {
+            pointer-events: auto;
+            background: #e2e8f0; border: none; padding: 4px 14px; border-radius: 30px; font-size: 0.8rem; color: #334155; cursor: pointer; transition: 0.2s;
+        }
+        .section-title .manage-btn:hover { background: #cbd5e1; transform: scale(1.05); }
+
+        /* 网格卡片布局 - 关键修改点 */
+        .grid {
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-auto-rows: 260px; /* 【关键修复】固定每一行小卡片的高度 */
+            gap: 20px; 
             justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            color: white;
-            margin-bottom: 16px;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+        }
+
+        /* 内部小卡片 - 固定大小 */
+        .card {
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(6px); border-radius: 20px;
+            padding: 20px 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(255,255,255,0.8);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100%; /* 填满固定高度的网格行 */
+            width: 100%;
+            overflow: hidden; /* 超出固定高度的内容直接隐藏，避免撑破 */
+            transition: 0.2s;
+            cursor: grab;
+            position: relative;
+        }
+        .card:hover { background: rgba(255, 255, 255, 0.95); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+        .card:active { cursor: grabbing; }
+        /* 小卡片拖拽状态 */
+        .card.dragging {
+            opacity: 0.3;
+            transform: scale(0.9);
+        }
+        .card.drag-over {
+            border: 2px dashed #7c3aed !important;
+            background: rgba(124, 58, 237, 0.1) !important;
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .icon-wrapper {
+            width: 56px; height: 56px; border-radius: 16px; display: flex; justify-content: center; align-items: center;
+            font-size: 1.6rem; color: white; margin-bottom: 8px; box-shadow: 0 5px 12px rgba(0,0,0,0.05); flex-shrink: 0;
         }
         .icon-blue { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
         .icon-orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
         .icon-green { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
         .icon-red { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
         .icon-purple { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+        .icon-gray { background: linear-gradient(135deg, #8e9eab 0%, #eef2f3 100%); color: #1e293b; }
 
-        .card h3 {
-            font-size: 1.15rem;
-            color: #1e293b;
-            margin-bottom: 4px;
-        }
-        .card p {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            margin-bottom: 12px;
-        }
+        .card h3 { font-size: 1rem; color: #1e293b; margin-bottom: 2px; }
+        .card p { font-size: 0.75rem; color: #94a3b8; margin-bottom: 6px; }
 
-        /* 下拉菜单和按钮样式 */
-        .select-wrapper {
-            width: 100%;
-            margin-bottom: 8px;
-        }
+        .select-wrapper { width: 100%; margin-bottom: 4px; flex-shrink: 0; }
         .select-wrapper select {
-            width: 90%;
-            padding: 6px 8px;
-            border-radius: 12px;
-            border: 1px solid #d1d9e6;
-            background: white;
-            font-size: 0.85rem;
-            color: #334155;
-            outline: none;
+            width: 90%; padding: 4px 8px; border-radius: 10px; border: 1px solid #d1d9e6; background: white;
+            font-size: 0.75rem; color: #334155; outline: none;
         }
         .go-btn, .card-link {
-            margin-top: 8px;
-            display: inline-block;
-            text-decoration: none;
-            background: #e2e8f0;
-            color: #475569;
-            padding: 6px 20px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            transition: 0.2s;
-            border: none;
-            cursor: pointer;
+            margin-top: 4px; display: inline-block; text-decoration: none; background: #e2e8f0; color: #475569;
+            padding: 4px 14px; border-radius: 30px; font-size: 0.75rem; font-weight: 600; transition: 0.2s;
+            border: none; cursor: pointer; flex-shrink: 0;
         }
-        .go-btn:hover, .card-link:hover {
-            background: #cbd5e1;
-        }
+        .go-btn:hover, .card-link:hover { background: #cbd5e1; }
         .card-link {
-            padding: 8px 25px;
-            background: #1e293b;
-            color: white;
+            padding: 6px 18px; background: #1e293b; color: white;
         }
-        .card-link:hover {
-            background: #0f172a;
-        }
-        .footer-tip {
-            margin-top: 40px;
-            font-size: 0.8rem;
-            color: #94a3b8;
-            opacity: 0.8;
-        }
-        /* 强制去掉所有图标的背景色、边框和阴影 */
-        .icon-wrapper {
-            background: transparent !important;
-            box-shadow: none !important;
-            border: none !important;
-        }
-        .icon-wrapper i {
-            color: #1e293b !important;
-        }
+        .card-link:hover { background: #0f172a; }
 
-        /* ======= 暗色模式专属样式 ======= */
+        .icon-wrapper { background: transparent !important; box-shadow: none !important; border: none !important; }
+        .icon-wrapper i { color: #1e293b !important; font-size: 2rem; }
+
+        /* 暗色模式覆盖 */
         body.dark-mode { background-color: #0f172a !important; }
         body.dark-mode .header-title { color: #e2e8f0 !important; }
         body.dark-mode #clock-display { color: #e2e8f0 !important; }
         body.dark-mode .header-sub { color: #94a3b8; border-color: #334155; }
         body.dark-mode #search-box { background: rgba(30, 41, 59, 0.7); color: white; border-color: #475569; }
+        body.dark-mode .section-block {
+            background: rgba(30, 41, 59, 0.8); border-color: #475569; box-shadow: none;
+        }
+        body.dark-mode .section-block.drag-over {
+            border-color: #7c3aed !important;
+            background: rgba(124, 58, 237, 0.2) !important;
+        }
+        body.dark-mode .section-title { color: #e2e8f0; border-bottom-color: #475569; }
+        body.dark-mode .section-title .manage-btn { background: #334155; color: #f1f5f9; }
+        body.dark-mode .section-title .manage-btn:hover { background: #475569; }
         body.dark-mode .card {
-            background: rgba(30, 41, 59, 0.85);
-            border-color: #475569;
-            box-shadow: none;
+            background: rgba(30, 41, 59, 0.85); border-color: #475569; box-shadow: none;
         }
         body.dark-mode .card h3 { color: #e2e8f0; }
         body.dark-mode .card p { color: #94a3b8; }
         body.dark-mode .icon-wrapper i { color: #e2e8f0 !important; }
         body.dark-mode .card-link:not(.go-btn) { background: #334155; color: #f1f5f9; }
         body.dark-mode .card-link:hover { background: #475569; }
+        body.dark-mode .card.drag-over {
+            border-color: #7c3aed !important;
+            background: rgba(124, 58, 237, 0.2) !important;
+        }
+
+        .add-category-box {
+            margin-top: 20px; padding: 15px; display: flex; justify-content: center; gap: 10px;
+        }
+        .add-category-box input {
+            padding: 8px 16px; border-radius: 20px; border: 1px solid #d1d9e6; outline: none; background: rgba(255,255,255,0.8); width: 200px;
+        }
+        .add-category-box input:focus { border-color: #7c3aed; background: white; }
+        .add-category-box button {
+            padding: 8px 20px; border-radius: 20px; border: none; background: #7c3aed; color: white; cursor: pointer; font-weight: 600;
+        }
+        .add-category-box button:hover { background: #692eda; }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr 1fr; gap: 15px; grid-auto-rows: 240px; } /* 手机端稍微压低 */
+            .section-block { padding: 15px; }
+            .card { padding: 15px 10px; }
+            .icon-wrapper { width: 48px; height: 48px; font-size: 1.4rem; }
+            .card h3 { font-size: 0.9rem; }
+        }
+        @media (max-width: 400px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        /* ===== 分类管理模态框 ===== */
+        #edit-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); z-index: 9999;
+            justify-content: center; align-items: center;
+        }
+        .modal-box {
+            background: white; max-width: 600px; width: 90%; padding: 30px; border-radius: 28px;
+            max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            text-align: left;
+        }
+        .modal-box h2 { font-size: 1.5rem; color: #1e293b; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; }
+        .modal-box .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+        .edit-category-row {
+            margin-bottom: 15px; display: flex; gap: 10px; align-items: center;
+            background: #f8fafc; padding: 8px 12px; border-radius: 20px;
+        }
+        .edit-category-row label { color: #64748b; font-weight: 500; font-size: 0.9rem; white-space: nowrap; }
+        .edit-category-row input {
+            flex: 1; padding: 4px 10px; border: none; border-bottom: 2px solid #d1d9e6;
+            background: transparent; outline: none; font-size: 1rem;
+        }
+        .edit-category-row input:focus { border-bottom-color: #7c3aed; }
+        .edit-category-row button {
+            background: #7c3aed; color: white; border: none; padding: 4px 16px; border-radius: 20px;
+            font-weight: 600; cursor: pointer;
+        }
+        .edit-category-row button:hover { background: #692eda; }
+        .modal-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px dashed #e2e8f0; }
+        .modal-item .item-title { flex: 1; font-weight: 500; }
+        .modal-item select { padding: 4px 8px; border-radius: 8px; border: 1px solid #d1d9e6; flex: 0 0 120px; }
+        .modal-item .del-btn { color: #ef4444; background: none; border: none; cursor: pointer; padding: 4px 8px; font-size: 1.1rem; }
+        .modal-item .del-btn:hover { background: #fee2e2; border-radius: 6px; }
+
+        /* 行内添加卡片区域 */
+        #inline-add-row {
+            display: none;
+            padding: 12px 0;
+            border-top: 1px dashed #d1d9e6;
+            margin-top: 10px;
+            flex-direction: column;
+            gap: 10px;
+        }
+        #inline-add-row input {
+            padding: 8px 12px; border-radius: 20px; border: 1px solid #d1d9e6; outline: none;
+            background: #fafcff; font-size: 0.9rem;
+        }
+        #inline-add-row input:focus { border-color: #7c3aed; background: white; }
+        .inline-add-actions {
+            display: flex; gap: 10px; justify-content: flex-end; margin-top: 5px;
+        }
+        .inline-add-actions button {
+            padding: 6px 16px; border-radius: 20px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+
+        body.dark-mode .modal-box { background: #1e293b; color: #e2e8f0; }
+        body.dark-mode .modal-box h2 { color: #e2e8f0; border-bottom-color: #475569; }
+        body.dark-mode .edit-category-row { background: #334155; }
+        body.dark-mode .edit-category-row label { color: #94a3b8; }
+        body.dark-mode .edit-category-row input { color: #e2e8f0; border-bottom-color: #475569; }
+        body.dark-mode .edit-category-row input:focus { border-bottom-color: #7c3aed; }
+        body.dark-mode .modal-item { border-bottom-color: #475569; }
+        body.dark-mode .modal-item .item-title { color: #e2e8f0; }
+        body.dark-mode #inline-add-row { border-top-color: #475569; }
+        body.dark-mode #inline-add-row input { background: #334155; color: #e2e8f0; border-color: #475569; }
+        body.dark-mode #inline-add-row input:focus { border-color: #7c3aed; background: #1e293b; }
+        body.dark-mode .inline-add-actions button { background: #475569; color: #e2e8f0; }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- 功能：暗色模式切换 -->
     <div class="header-actions">
         <button id="theme-toggle" class="theme-toggle-btn">🌙 暗色模式</button>
     </div>
-
     <div class="header-title"><i class="fa-solid fa-toolbox"></i> 快速跳转 </div>
     <div class="header-sub">更便捷的打开方式</div>
-
-    <!-- 功能：实时时钟 -->
     <div id="clock-display">⏰ 加载中...</div>
-
-    <!-- 功能：卡片搜索框 -->
     <div class="search-wrapper">
         <input type="text" id="search-box" placeholder="🔍 搜索工具名称 (如 CF, 洛谷)...">
     </div>
 
-    <div class="grid">
-        <!-- 卡片 1：做题记录 -->
-        <div class="card">
-            <div class="icon-wrapper icon-blue"><i class="fa-solid fa-list-check"></i></div>
-            <h3>做题记录</h3>
-            <p>算法追踪 · 状态记录</p>
-            <a href="/I-am-XXh.mz/icbp.html" class="card-link">📝 进入</a>
-        </div>
+    <div id="categories-container"></div>
 
-        <!-- 卡片 2：博客园 -->
-        <div class="card">
-            <div class="icon-wrapper icon-orange" style="padding: 10px;">
-                <img src="https://ts1.tc.mm.bing.net/th/id/ODF.J6leVzKhepVCqn16LLjyWg?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <h3>博客园</h3>
-            <p>文章记录 · 学习笔记</p>
-            <a href="https://www.cnblogs.com/XXh0919" target="_blank" class="card-link">📖 前往</a>
-        </div>
-
-        <!-- 卡片 3：洛谷 -->
-        <div class="card">
-            <div class="icon-wrapper icon-green" style="padding: 10px;">
-                <img src="https://fecdn.luogu.com.cn/columba/static.325908fec383795b.logo-single-color.svg" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <h3>洛谷</h3>
-            <p>国内在线题库</p>
-            <a href="https://www.luogu.com.cn" target="_blank" class="card-link">💻 前往</a>
-        </div>
-
-        <!-- 卡片 4：Codeforces（带下拉框 + 主站链接） -->
-        <div class="card">
-            <div class="icon-wrapper icon-red" style="padding: 10px;">
-                <img src="https://ts3.tc.mm.bing.net/th/id/ODF.PnqYzRrYxyP7VRy0DAYqsA?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <h3>Codeforces</h3>
-            <p>国外算法竞赛</p>
-            <a href="https://codeforces.com/" target="_blank" style="display: inline-block; color: #64748b; font-size: 0.75rem; text-decoration: underline; margin: 0 0 8px 0;">🌐 主站首页</a>
-            <div class="select-wrapper">
-                <select id="cf-select">
-                    <option value="">选择账号</option>
-                    <option value="XXh0919">XXh0919</option>
-                    <option value="Laoxu0919">Laoxu0919</option>
-                </select>
-            </div>
-            <button class="go-btn" onclick="jumpCF()">🚀 前往账号</button>
-        </div>
-
-        <!-- 卡片 5：AtCoder（带下拉框 + 主站链接） -->
-        <div class="card">
-            <div class="icon-wrapper icon-purple" style="padding: 10px;">
-                <img src="//img.atcoder.jp/assets/top/img/logo_bk.svg" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <h3>AtCoder</h3>
-            <p>国外算法竞赛</p>
-            <a href="https://atcoder.jp/" target="_blank" style="display: inline-block; color: #64748b; font-size: 0.75rem; text-decoration: underline; margin: 0 0 8px 0;">🌐 主站首页</a>
-            <div class="select-wrapper">
-                <select id="at-select">
-                    <option value="">选择账号</option>
-                    <option value="XXh0919">XXh0919</option>
-                    <option value="Laoxu0919">Laoxu0919</option>
-                </select>
-            </div>
-            <button class="go-btn" onclick="jumpAt()">🚀 前往账号</button>
-        </div>
-
-        <!-- 卡片 6：我的 GitHub -->
-        <div class="card">
-            <div class="icon-wrapper" style="padding: 10px;">
-                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <h3>GitHub</h3>
-            <p>代码仓库 · 项目托管</p>
-            <a href="https://github.com/XXh0919" target="_blank" class="card-link">💻 前往</a>
-        </div>
-
-        <!-- 卡片 7：UOJ -->
-        <div class="card">
-            <div class="icon-wrapper icon-green" style="padding: 10px;">
-                <img src="https://uoj.ac/pictures/UOJ.png" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <h3>UOJ</h3>
-            <p>国内在线题库</p>
-            <a href="https://uoj.ac/" target="_blank" class="card-link">👉 前往</a>
-        </div>
-        
-        <div class="card">
-            <div class="icon-wrapper icon-green" style="padding: 10px;">
-                <img src="http://10.37.2.111/pictures/UOJ_small.png" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <h3>MZOJ</h3>
-            <p>校内 OJ</p>
-            <a href="http://10.37.2.111/" target="_blank" class="card-link">🚀 前往</a>
-        </div>
-        
-        <div class="card">
-            <div class="icon-wrapper icon-green" style="padding: 10px;">
-                <img src="https://ts1.tc.mm.bing.net/th/id/ODLS.A2450BEC-5595-40BA-9F13-D9EC6AB74B9F?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <h3>QOJ</h3>
-            <p>国内国际在线题库</p>
-            <a href="https://qoj.ac/" target="_blank" class="card-link">🤩 前往</a>
-        </div>
-        
-        <div class="card">
-            <div class="icon-wrapper icon-green" style="padding: 10px;">
-                <img src="https://ts2.tc.mm.bing.net/th/id/ODF.j8lwrJo-hsmy9BcmYsPGiQ?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <h3>Graph Editor</h3>
-            <p>图论问题工具</p>
-            <a href="https://csacademy.com/app/graph_editor/" target="_blank" class="card-link">👍 前往</a>
-        </div>
-        
-        <div class="card">
-            <div class="icon-wrapper icon-green" style="padding: 10px;">
-                <img src="https://ts4.tc.mm.bing.net/th/id/ODF.YxK1MUJaRoBfBG4UGNrXAA?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <h3>Deepseek</h3>
-            <p>强力大模型</p>
-            <a href="https://chat.deepseek.com/" target="_blank" class="card-link">😊 前往</a>
-        </div>
-
-        <div class="card">
-            <div class="icon-wrapper icon-green" style="padding: 10px;">
-                <img src="https://ts1.tc.mm.bing.net/th/id/ODLS.A2450BEC-5595-40BA-9F13-D9EC6AB74B9F?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <h3>MZZers</h3>
-            <p>校内非官方社交平台</p>
-            <a href="https://mzzers.mywwzh.top/" target="_blank" class="card-link">🎯 前往</a>
-        </div>
-        
-        <!-- 卡片 8：正在构思 -->
-        <div class="card">
-            <div class="icon-wrapper icon-blue"><i class="fa-regular fa-lightbulb"></i></div>
-            <h3>正在构思</h3>
-            <p>更多项目开发中...</p>
-            <a href="#" class="go-btn" style="background:#e2e8f0;">敬请期待</a>
-        </div>
+    <div class="add-category-box">
+        <input type="text" id="new-category-name" placeholder="输入新分类名称..." maxlength="20">
+        <button onclick="addCategory()">➕ 添加分类</button>
     </div>
     
     <div class="footer-tip">↑ 点击卡片快速跳转 ↑</div>
 </div>
 
-<!-- JS 逻辑：处理下拉框跳转、时钟、搜索、暗黑模式切换 -->
-<script>
-    // 1. 实时时钟
-    function updateClock() {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('zh-CN', { hour12: false });
-        document.getElementById('clock-display').innerText = `⏰ 当前时间：${timeStr}`;
-    }
-    updateClock();
-    setInterval(updateClock, 1000);
+<!-- ===== 分类管理模态框 ===== -->
+<div id="edit-modal">
+    <div class="modal-box">
+        <h2><span id="edit-modal-title">管理当前分类</span><button class="close-modal" onclick="closeEditModal()">×</button></h2>
+        <div class="edit-category-row">
+            <label>分类名称：</label>
+            <input type="text" id="edit-category-name" maxlength="20" placeholder="输入新名称...">
+            <button onclick="saveCategoryName()">保存</button>
+        </div>
+        <div id="edit-modal-items"></div>
 
-    // 2. 卡片搜索过滤
-    document.getElementById('search-box').addEventListener('input', function() {
-        const keyword = this.value.toLowerCase().trim();
-        document.querySelectorAll('.grid .card').forEach(card => {
-            const title = card.querySelector('h3').innerText.toLowerCase();
-            card.style.display = title.includes(keyword) ? 'flex' : 'none';
+        <!-- 行内添加卡片 -->
+        <div id="inline-add-row">
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <input type="text" id="ni-title" placeholder="卡片标题 *" style="flex:1; min-width:120px;">
+                <input type="text" id="ni-desc" placeholder="卡片描述" style="flex:1; min-width:120px;">
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <input type="url" id="ni-url" placeholder="网站网址 *" style="flex:1; min-width:150px;">
+                <input type="url" id="ni-img" placeholder="图标图片链接 (可选)" style="flex:1; min-width:150px;">
+            </div>
+            <div class="inline-add-actions">
+                <button onclick="cancelInlineAdd()" style="background:#e2e8f0; color:#475569;">取消</button>
+                <button onclick="saveInlineAdd()" style="background:#7c3aed; color:white;">✅ 保存卡片</button>
+            </div>
+        </div>
+
+        <!-- 触发按钮 -->
+        <div class="modal-add-box" id="open-add-btn">
+            <button onclick="showInlineAdd()" style="width:100%; padding:10px; background:#7c3aed; color:white; border:none; border-radius:30px; font-weight:600; cursor:pointer; transition:0.2s;">➕ 在当前分类添加新卡片</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = 'xxh_categories_config';
+    let editingCategoryIndex = -1;
+    let dragData = null; // 用于存储拖拽的数据
+
+    const getDefaultData = () => [
+        {
+            name: '💻 OI 算法网站',
+            items: [
+                { type: 'link', title: '洛谷', desc: '国内在线题库', icon: 'image', imgUrl: 'https://fecdn.luogu.com.cn/columba/static.325908fec383795b.logo-single-color.svg', url: 'https://www.luogu.com.cn' },
+                { type: 'link', title: 'Codeforces', desc: '国外算法竞赛', icon: 'image', imgUrl: 'https://ts3.tc.mm.bing.net/th/id/ODF.PnqYzRrYxyP7VRy0DAYqsA?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2', url: 'https://codeforces.com/', hasDropdown: 'cf' },
+                { type: 'link', title: 'AtCoder', desc: '国外算法竞赛', icon: 'image', imgUrl: '//img.atcoder.jp/assets/top/img/logo_bk.svg', url: 'https://atcoder.jp/', hasDropdown: 'atcoder' },
+                { type: 'link', title: 'UOJ', desc: '国内在线题库', icon: 'image', imgUrl: 'https://uoj.ac/pictures/UOJ.png', url: 'https://uoj.ac/' },
+                { type: 'link', title: 'QOJ', desc: '国内国际在线题库', icon: 'image', imgUrl: 'https://ts1.tc.mm.bing.net/th/id/ODLS.A2450BEC-5595-40BA-9F13-D9EC6AB74B9F?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2', url: 'https://qoj.ac/' },
+                { type: 'link', title: 'MZOJ', desc: '校内 OJ', icon: 'image', imgUrl: 'http://10.37.2.111/pictures/UOJ_small.png', url: 'http://10.37.2.111/' }
+            ]
+        },
+        {
+            name: '🛠️ 常用工具',
+            items: [
+                { type: 'link', title: 'Graph Editor', desc: '图论问题工具', icon: 'image', imgUrl: 'https://ts2.tc.mm.bing.net/th/id/ODF.j8lwrJo-hsmy9BcmYsPGiQ?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2', url: 'https://csacademy.com/app/graph_editor/' },
+                { type: 'link', title: 'Deepseek', desc: '强力大模型', icon: 'image', imgUrl: 'https://ts4.tc.mm.bing.net/th/id/ODF.YxK1MUJaRoBfBG4UGNrXAA?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2', url: 'https://chat.deepseek.com/' }
+            ]
+        },
+        {
+            name: '📂 个人记录 & 项目',
+            items: [
+                { type: 'record', title: '做题记录', desc: '算法追踪 · 状态记录', icon: 'fa-solid fa-list-check', url: '/I-am-XXh.mz/icbp.html' },
+                { type: 'link', title: '博客园', desc: '文章记录 · 学习笔记', icon: 'image', imgUrl: 'https://ts1.tc.mm.bing.net/th/id/ODF.J6leVzKhepVCqn16LLjyWg?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2', url: 'https://www.cnblogs.com/XXh0919' },
+                { type: 'link', title: 'GitHub', desc: '代码仓库 · 项目托管', icon: 'image', imgUrl: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png', url: 'https://github.com/XXh0919' },
+                { type: 'link', title: 'MZZers', desc: '校内非官方社交', icon: 'image', imgUrl: 'https://ts1.tc.mm.bing.net/th/id/ODLS.A2450BEC-5595-40BA-9F13-D9EC6AB74B9F?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2', url: 'https://mzzers.mywwzh.top/' }
+            ]
+        }
+    ];
+
+    let categories = loadCategories();
+    function loadCategories() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            try {
+                return JSON.parse(stored);
+            } catch(e) { /* ignore */ }
+        }
+        return getDefaultData();
+    }
+    function saveCategories() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
+    }
+
+    function renderCategories() {
+        const container = document.getElementById('categories-container');
+        container.innerHTML = '';
+        const keyword = document.getElementById('search-box').value.toLowerCase().trim();
+
+        categories.forEach((section, idx) => {
+            let itemsHtml = '';
+            let hasVisibleItem = false;
+
+            section.items.forEach((item, itemIdx) => {
+                const titleMatch = item.title.toLowerCase().includes(keyword);
+                if (keyword && !titleMatch) return;
+                hasVisibleItem = true;
+                // 渲染卡片（附带 data 属性用于小卡片拖拽）
+                itemsHtml += renderCardHtml(item, idx, itemIdx);
+            });
+
+            if (!hasVisibleItem && keyword) return;
+
+            const block = document.createElement('div');
+            block.className = 'section-block';
+            block.draggable = true;
+            block.dataset.index = idx;
+            
+            // 绑定大卡片拖拽事件
+            block.addEventListener('dragstart', handleSectionDragStart);
+            block.addEventListener('dragover', handleSectionDragOver);
+            block.addEventListener('dragleave', handleSectionDragLeave);
+            block.addEventListener('drop', handleSectionDrop);
+            block.addEventListener('dragend', handleSectionDragEnd);
+
+            block.innerHTML = `
+                <div class="section-title">
+                    <span>${section.name}</span>
+                    <button class="manage-btn" onclick="openEditModal(${idx})">⚙️ 管理</button>
+                </div>
+                <div class="grid">${itemsHtml}</div>
+            `;
+            container.appendChild(block);
         });
+
+        if (container.innerHTML === '') {
+            container.innerHTML = `<div style="color:#94a3b8; padding:20px;">没有找到相关工具哦~</div>`;
+        }
+    }
+
+    // 渲染单张小卡片的 HTML（附带了 data-parent-idx 和 data-item-idx）
+    function renderCardHtml(item, parentIdx, itemIdx) {
+        let content = '';
+        if (item.type === 'record') {
+            content = `
+                <div class="icon-wrapper icon-blue"><i class="${item.icon}"></i></div>
+                <h3>${item.title}</h3>
+                <p>${item.desc}</p>
+                <a href="${item.url}" target="_blank" class="card-link">📝 进入</a>
+            `;
+        } else if (item.hasDropdown === 'cf') {
+            content = `
+                <div class="icon-wrapper icon-red" style="padding:10px;">
+                    <img src="${item.imgUrl}" style="width:100%;height:100%;object-fit:contain;">
+                </div>
+                <h3>${item.title}</h3>
+                <p>${item.desc}</p>
+                <a href="${item.url}" target="_blank" style="display:inline-block;color:#64748b;font-size:0.75rem;text-decoration:underline;margin:0 0 6px 0;">🌐 主站首页</a>
+                <div class="select-wrapper">
+                    <select id="cf-select">
+                        <option value="">选择账号</option>
+                        <option value="XXh0919">XXh0919</option>
+                        <option value="Laoxu0919">Laoxu0919</option>
+                    </select>
+                </div>
+                <button class="go-btn" onclick="jumpCF()">🚀 前往账号</button>
+            `;
+        } else if (item.hasDropdown === 'atcoder') {
+            content = `
+                <div class="icon-wrapper icon-purple" style="padding:10px;">
+                    <img src="${item.imgUrl}" style="width:100%;height:100%;object-fit:contain;">
+                </div>
+                <h3>${item.title}</h3>
+                <p>${item.desc}</p>
+                <a href="${item.url}" target="_blank" style="display:inline-block;color:#64748b;font-size:0.75rem;text-decoration:underline;margin:0 0 6px 0;">🌐 主站首页</a>
+                <div class="select-wrapper">
+                    <select id="at-select">
+                        <option value="">选择账号</option>
+                        <option value="XXh0919">XXh0919</option>
+                        <option value="Laoxu0919">Laoxu0919</option>
+                    </select>
+                </div>
+                <button class="go-btn" onclick="jumpAt()">🚀 前往账号</button>
+            `;
+        } else if (item.icon === 'image') {
+            content = `
+                <div class="icon-wrapper icon-green" style="padding:10px;">
+                    <img src="${item.imgUrl}" style="width:100%;height:100%;object-fit:contain;">
+                </div>
+                <h3>${item.title}</h3>
+                <p>${item.desc}</p>
+                <a href="${item.url}" target="_blank" class="card-link">🚀 前往</a>
+            `;
+        } else {
+            content = `
+                <div class="icon-wrapper icon-blue"><i class="${item.icon}"></i></div>
+                <h3>${item.title}</h3>
+                <p>${item.desc}</p>
+                <a href="${item.url}" target="_blank" class="card-link">进入</a>
+            `;
+        }
+
+        // 返回带 data 属性和拖拽事件的卡片 HTML
+        return `
+            <div class="card" draggable="true" data-parent-idx="${parentIdx}" data-item-idx="${itemIdx}">
+                ${content}
+            </div>
+        `;
+    }
+
+    /* ===== 大卡片拖拽逻辑 ===== */
+    function handleSectionDragStart(e) {
+        dragData = { type: 'section', from: parseInt(e.target.dataset.index) };
+        e.target.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', dragData.from);
+    }
+    function handleSectionDragOver(e) {
+        e.preventDefault();
+        const target = e.target.closest('.section-block');
+        if (target) target.classList.add('drag-over');
+    }
+    function handleSectionDragLeave(e) {
+        const target = e.target.closest('.section-block');
+        if (target) target.classList.remove('drag-over');
+    }
+    function handleSectionDrop(e) {
+        e.preventDefault();
+        const target = e.target.closest('.section-block');
+        target.classList.remove('drag-over');
+        const to = parseInt(target.dataset.index);
+        if (dragData && dragData.type === 'section' && dragData.from !== to) {
+            const [item] = categories.splice(dragData.from, 1);
+            categories.splice(to, 0, item);
+            saveCategories();
+            renderCategories();
+        }
+    }
+    function handleSectionDragEnd(e) {
+        document.querySelectorAll('.section-block').forEach(el => el.classList.remove('dragging', 'drag-over'));
+        dragData = null;
+    }
+
+    /* ===== 小卡片拖拽逻辑 ===== */
+    // 监听由 renderCategories 生成的卡片（使用事件委托）
+    document.addEventListener('dragstart', function(e) {
+        const card = e.target.closest('.card');
+        if (!card) return;
+
+        // 防误触：如果点的是链接、按钮、下拉框，取消拖拽
+        if (e.target.closest('a') || e.target.closest('button') || e.target.closest('select')) {
+            e.preventDefault();
+            return false;
+        }
+
+        const parentIdx = parseInt(card.dataset.parentIdx);
+        const itemIdx = parseInt(card.dataset.itemIdx);
+        dragData = { type: 'card', fromParent: parentIdx, fromItem: itemIdx };
+        card.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', `${parentIdx}|${itemIdx}`);
     });
 
-    // 3. 暗色模式切换
+    document.addEventListener('dragover', function(e) {
+        const card = e.target.closest('.card');
+        if (!card) return;
+        e.preventDefault();
+        card.classList.add('drag-over');
+    });
+
+    document.addEventListener('dragleave', function(e) {
+        const card = e.target.closest('.card');
+        if (card) card.classList.remove('drag-over');
+    });
+
+    document.addEventListener('drop', function(e) {
+        e.preventDefault();
+        const targetCard = e.target.closest('.card');
+        if (!targetCard) return;
+        targetCard.classList.remove('drag-over');
+
+        if (!dragData || dragData.type !== 'card') return;
+        
+        const toParentIdx = parseInt(targetCard.dataset.parentIdx);
+        const toItemIdx = parseInt(targetCard.dataset.itemIdx);
+        
+        if (dragData.fromParent === toParentIdx && dragData.fromItem === toItemIdx) return;
+
+        // 1. 从源位置移除卡片
+        const [item] = categories[dragData.fromParent].items.splice(dragData.fromItem, 1);
+        // 2. 插入到目标位置
+        categories[toParentIdx].items.splice(toItemIdx, 0, item);
+        
+        saveCategories();
+        renderCategories();
+    });
+
+    document.addEventListener('dragend', function(e) {
+        document.querySelectorAll('.card').forEach(el => el.classList.remove('dragging', 'drag-over'));
+        dragData = null;
+    });
+
+
+    /* ===== 管理模态框逻辑 ===== */
+    function openEditModal(index) {
+        editingCategoryIndex = index;
+        const section = categories[index];
+        document.getElementById('edit-modal-title').innerText = `📝 管理：${section.name}`;
+        document.getElementById('edit-category-name').value = section.name;
+        document.getElementById('inline-add-row').style.display = 'none';
+        document.getElementById('open-add-btn').style.display = 'block';
+        renderModalItems();
+        document.getElementById('edit-modal').style.display = 'flex';
+    }
+    function closeEditModal() {
+        document.getElementById('edit-modal').style.display = 'none';
+        renderCategories();
+    }
+    function renderModalItems() {
+        const container = document.getElementById('edit-modal-items');
+        const section = categories[editingCategoryIndex];
+        container.innerHTML = '';
+
+        const catOptions = categories.map((c, i) => `<option value="${i}">${c.name}</option>`).join('');
+
+        section.items.forEach((item, idx) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'modal-item';
+            itemDiv.innerHTML = `
+                <span class="item-title">${item.title}</span>
+                <select onchange="moveItem(${editingCategoryIndex}, ${idx}, this.value)">
+                    ${catOptions}
+                </select>
+                <button class="del-btn" onclick="deleteItem(${editingCategoryIndex}, ${idx})">🗑️</button>
+            `;
+            itemDiv.querySelector('select').value = editingCategoryIndex;
+            container.appendChild(itemDiv);
+        });
+    }
+
+    function saveCategoryName() {
+        const input = document.getElementById('edit-category-name');
+        const newName = input.value.trim();
+        if (!newName) { alert('分类名称不能为空！'); return; }
+        if (editingCategoryIndex >= 0 && editingCategoryIndex < categories.length) {
+            categories[editingCategoryIndex].name = newName;
+            saveCategories();
+            document.getElementById('edit-modal-title').innerText = `📝 管理：${newName}`;
+            renderModalItems();
+        }
+    }
+
+    function moveItem(fromCat, itemIdx, toCatIdx) {
+        toCatIdx = parseInt(toCatIdx);
+        if (fromCat === toCatIdx) return;
+        const item = categories[fromCat].items[itemIdx];
+        categories[fromCat].items.splice(itemIdx, 1);
+        categories[toCatIdx].items.push(item);
+        saveCategories();
+        renderModalItems();
+    }
+
+    function deleteItem(catIdx, itemIdx) {
+        if (confirm('确定要删除这个小卡片吗？')) {
+            categories[catIdx].items.splice(itemIdx, 1);
+            saveCategories();
+            renderModalItems();
+        }
+    }
+
+    /* ===== 行内添加卡片 ===== */
+    function showInlineAdd() {
+        document.getElementById('open-add-btn').style.display = 'none';
+        document.getElementById('inline-add-row').style.display = 'flex';
+        document.getElementById('ni-title').value = '';
+        document.getElementById('ni-desc').value = '';
+        document.getElementById('ni-url').value = '';
+        document.getElementById('ni-img').value = '';
+    }
+    function cancelInlineAdd() {
+        document.getElementById('inline-add-row').style.display = 'none';
+        document.getElementById('open-add-btn').style.display = 'block';
+    }
+    function saveInlineAdd() {
+        const title = document.getElementById('ni-title').value.trim();
+        const desc = document.getElementById('ni-desc').value.trim();
+        const url = document.getElementById('ni-url').value.trim();
+        const imgUrl = document.getElementById('ni-img').value.trim();
+
+        if (!title) { alert('卡片标题是必填项！'); return; }
+        if (!url) { alert('网站网址是必填项！'); return; }
+
+        categories[editingCategoryIndex].items.push({
+            type: 'link',
+            title: title,
+            desc: desc || '未填写描述',
+            icon: 'image',
+            imgUrl: imgUrl || 'https://via.placeholder.com/32',
+            url: url
+        });
+
+        saveCategories();
+        cancelInlineAdd();
+        renderModalItems();
+        renderCategories();
+    }
+
+    function addCategory() {
+        const input = document.getElementById('new-category-name');
+        const name = input.value.trim();
+        if (!name) { alert('请输入分类名称！'); return; }
+        categories.push({ name: name, items: [] });
+        saveCategories();
+        renderCategories();
+        input.value = '';
+    }
+
+    function updateClock() {
+        const now = new Date();
+        document.getElementById('clock-display').innerText = `⏰ 当前时间：${now.toLocaleTimeString('zh-CN', { hour12: false })}`;
+    }
+    setInterval(updateClock, 1000); updateClock();
+
+    document.getElementById('search-box').addEventListener('input', renderCategories);
+
     const themeBtn = document.getElementById('theme-toggle');
     themeBtn.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         themeBtn.innerText = document.body.classList.contains('dark-mode') ? '☀️ 白天模式' : '🌙 暗色模式';
     });
 
-    // 4. CF 跳转
     function jumpCF() {
         const val = document.getElementById('cf-select').value;
-        if (val) {
-            window.open('https://codeforces.com/profile/' + val, '_blank');
-        } else {
-            alert('请先在下拉框里选择一个 Codeforces 账号！');
-        }
+        if (val) window.open('https://codeforces.com/profile/' + val, '_blank');
+        else alert('请先在下拉框里选择一个 Codeforces 账号！');
     }
-    // 5. AtCoder 跳转
     function jumpAt() {
         const val = document.getElementById('at-select').value;
-        if (val) {
-            window.open('https://atcoder.jp/users/' + val, '_blank');
-        } else {
-            alert('请先在下拉框里选择一个 AtCoder 账号！');
-        }
+        if (val) window.open('https://atcoder.jp/users/' + val, '_blank');
+        else alert('请先在下拉框里选择一个 AtCoder 账号！');
     }
+
+    renderCategories();
 </script>
 </body>
 </html>
