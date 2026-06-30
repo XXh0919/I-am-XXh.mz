@@ -58,10 +58,10 @@
     .diff-2 { background:rgb(243,156,17); color: white; }
     .diff-3 { background: rgb(255,193,22); color: white; }
     .diff-4 { background: rgb(83,196,26); color: white; }
-    .diff-5 { background: rgb(19, 194, 194); color: white; }
-    .diff-6 { background: rgb(52,152,219); color: white; }
-    .diff-7 { background: rgb(156,61,207); color: white; }
-    .diff-8 { background: rgb(14,29,105); color: white; }
+    .diff-5 { background: rgb(52,152,219); color: white; }
+    .diff-6 { background: rgb(156,61,207); color: white; }
+    .diff-7 { background: rgb(14,29,105); color: white; }
+    .diff-8 { background: rgb(19, 194, 194); color: white; }
     .method-indicator { display: inline-flex; align-items: center; gap: 4px; }
     .method-dot { width: 8px; height: 8px; border-radius: 8px; background: #64748b; }
     .dot-self { background: #10b981; }
@@ -129,8 +129,8 @@
       <div class="form-group"><label>题目网址 (可选)</label><input type="text" class="form-control" id="url" placeholder="https://www.luogu.com.cn/problem/P1001"></div>
       <div class="form-group"><label>算法标签 (逗号分隔)</label><input type="text" class="form-control" id="tags" placeholder="数学, 字符串"></div>
       <div class="difficulty-row">
-        <div class="form-group"><label>难度</label><select class="form-control" id="difficulty"><option value="0">暂无评定</option><option value="1">入门</option><option value="2">普及-</option><option value="3">普及</option><option value="4" selected>普及+/提高-</option><option value="5">提高</option><option value="6">提高+/省选−</option><option value="7">省选/NOI−</option><option value="8">NOI/NOI+/CTS</option></select></div>
-        <div class="form-group"><label>个人认为难度</label><select class="form-control" id="self-difficulty"><option value="0">暂无评定</option><option value="1">入门</option><option value="2">普及-</option><option value="3">普及</option><option value="4" selected>普及+/提高-</option><option value="5">提高</option><option value="6">提高+/省选−</option><option value="7">省选/NOI−</option><option value="8">NOI/NOI+/CTS</option></select></div>
+        <div class="form-group"><label>难度</label><select class="form-control" id="difficulty"><option value="0">暂无评定</option><option value="1">入门</option><option value="2">普及-</option><option value="3">普及</option><option value="4" selected>普及+/提高-</option><option value="8">提高</option><option value="5">提高+/省选−</option><option value="6">省选/NOI−</option><option value="7">NOI/NOI+/CTS</option></select></div>
+        <div class="form-group"><label>个人认为难度</label><select class="form-control" id="self-difficulty"><option value="0">暂无评定</option><option value="1">入门</option><option value="2">普及-</option><option value="3">普及</option><option value="4" selected>普及+/提高-</option><option value="8">提高</option><option value="5">提高+/省选−</option><option value="6">省选/NOI−</option><option value="7">NOI/NOI+/CTS</option></select></div>
       </div>
       <div class="form-group"><label>完成方式</label>
         <div id="method-group" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px;">
@@ -163,7 +163,7 @@
   <div class="card">
     <div class="card-header"><h2>📊 做题趋势</h2><span class="badge" id="filtered-count">—</span></div>
     <div>
-      <div class="filter-section"><div class="filter-label">🔍 按难度筛选</div><div class="filter-chips" id="filter-container-diff"><div class="chip active" data-diff="all">全部</div><div class="chip" data-diff="0">暂无评定</div><div class="chip" data-diff="1">入门</div><div class="chip" data-diff="2">普及−</div><div class="chip" data-diff="3">普及</div><div class="chip" data-diff="4">普及+/提高-</div><div class="chip" data-diff="5">提高</div><div class="chip" data-diff="6">提高+/省选−</div><div class="chip" data-diff="7">省选/NOI−</div><div class="chip" data-diff="8">NOI/NOI+/CTS</div></div></div>
+      <div class="filter-section"><div class="filter-label">🔍 按难度筛选</div><div class="filter-chips" id="filter-container-diff"><div class="chip active" data-diff="all">全部</div><div class="chip" data-diff="0">暂无评定</div><div class="chip" data-diff="1">入门</div><div class="chip" data-diff="2">普及−</div><div class="chip" data-diff="3">普及</div><div class="chip" data-diff="4">普及+/提高-</div><div class="chip" data-diff="8">提高</div><div class="chip" data-diff="5">提高+/省选−</div><div class="chip" data-diff="6">省选/NOI−</div><div class="chip" data-diff="7">NOI/NOI+/CTS</div></div></div>
       <div class="filter-section"><div class="filter-label">📌 按完成方式筛选</div><div class="filter-chips" id="filter-container-method">
         <div class="chip active" data-method="all">全部</div>
         <div class="chip" data-method="self">✨ 独立写出</div>
